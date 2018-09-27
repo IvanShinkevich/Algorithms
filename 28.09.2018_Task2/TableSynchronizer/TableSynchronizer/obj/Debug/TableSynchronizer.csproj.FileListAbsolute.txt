@@ -1,0 +1,7 @@
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\bin\Debug\TableSynchronizer.exe.config
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\bin\Debug\TableSynchronizer.exe
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\bin\Debug\TableSynchronizer.pdb
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\obj\Debug\TableSynchronizer.csprojResolveAssemblyReference.cache
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\obj\Debug\TableSynchronizer.csproj.CoreCompileInputs.cache
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\obj\Debug\TableSynchronizer.exe
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\28.09.2018_Task2\TableSynchronizer\TableSynchronizer\obj\Debug\TableSynchronizer.pdb

@@ -13,6 +13,9 @@ namespace Sortings
         private const int minValue = 0;
         private const int arrAmo = 50;
         private const int arrSize = 100000;
+        private static int[] timeCurrentIterationQ = new int[50];
+        private static int[] timeCurrentIterationH = new int[50];
+        private static int n = 8;
 
         private static void WriteToFile(int[] arr, int fileNum)
         {
@@ -63,22 +66,21 @@ namespace Sortings
         {
             var arr4Qs = ReadArray(i);
             var insArr = ReadArray(i);
-            var customQSort = ReadArray(i);
             var watch = System.Diagnostics.Stopwatch.StartNew();
             Quicksort(arr4Qs, 0, arrSize-1);
             watch.Stop();
             var watchIns = System.Diagnostics.Stopwatch.StartNew();
             QuickSortHybrid(insArr, 0, arrSize-1);
             watchIns.Stop();
-
-            var watchCustomQ = System.Diagnostics.Stopwatch.StartNew();
-            QuicksortCustomQ(customQSort, 0, arrSize - 1);
-            watchCustomQ.Stop();
-
-
-            Console.WriteLine($"{watch.ElapsedMilliseconds} - {watchCustomQ.ElapsedMilliseconds} - {watchIns.ElapsedMilliseconds} - {CompareArr(arr4Qs,insArr)}");
-            WriteToFile(arr4Qs, i);
-            //if (i == 49) Console.;
+            Console.WriteLine($"{watch.ElapsedMilliseconds} - {watchIns.ElapsedMilliseconds} - {CompareArr(arr4Qs,insArr)}");
+            timeCurrentIterationQ[i] = (int)watch.ElapsedMilliseconds;
+            timeCurrentIterationH[i] = (int) watchIns.ElapsedMilliseconds;
+            if (i == 49)
+            {
+                float curIterationQ = ((float)timeCurrentIterationQ.Sum() )/ 50;
+                float curIterationH = ((float)timeCurrentIterationH.Sum() )/ 50;
+                File.AppendAllText($@".\FileStats.txt", $"{curIterationH < curIterationQ} - QuickSort: {curIterationQ}, HybridSort: {curIterationH}, n: {n}" + Environment.NewLine);
+            }
         }
 
         public static bool CompareArr(int[] arr1,int[] arr2)
@@ -108,7 +110,7 @@ namespace Sortings
             }
         }
 
-        private const int n = 8;
+       
 
         public static void Quicksort(int[] elements, int left, int right)
         {
@@ -150,44 +152,6 @@ namespace Sortings
                 Quicksort(elements, i, right);
             }
         }
-
-        public static void QuicksortCustomQ(int[] elements, int left, int right)
-        {
-            int pivot = findQ(elements, left, right);
-            // Recursive calls
-            if (left < pivot)
-            {
-                QuicksortCustomQ(elements, left, pivot);
-            }
-
-            if (pivot < right)
-            {
-                QuicksortCustomQ(elements, pivot+1, right);
-            }
-        }
-
-        private static int findQ(int[] arr, int left, int right)
-        {
-            int pivot = left + (right - left )/2;
-            int i = left;
-            int j = right;
-            while (i < j)
-            {
-                while ((i < pivot) && (arr[i] < arr[pivot])) i++;
-                while ((j > pivot) && (arr[j] >= arr[pivot])) j--;
-                if (i < j)
-                {
-                    int tmp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = tmp;
-                    if (i == pivot)
-                        pivot = j;
-                    else if (j == pivot) pivot = i;
-                }
-            }
-            return pivot;
-        }
-
 
         public static void QuickSortHybrid(int[] elements, int left, int right)
         {
@@ -235,41 +199,7 @@ namespace Sortings
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         private static void SortAllArraysQuickSort()
         {
             for (int i = 0; i < arrAmo; i++)
@@ -282,7 +212,11 @@ namespace Sortings
         {
 
             CreateArrays();
-            SortAllArraysQuickSort();
+            for (int i = 200; i >= 7; i--)
+            {
+                n = i;
+                SortAllArraysQuickSort();
+            }
         }
     }
 }

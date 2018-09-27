@@ -5,3 +5,10 @@ E:\studying\2к18ММФБГУ\rubl\Algo\Sortings\Sortings\obj\Debug\Sortings.csp
 E:\studying\2к18ММФБГУ\rubl\Algo\Sortings\Sortings\obj\Debug\Sortings.csproj.CoreCompileInputs.cache
 E:\studying\2к18ММФБГУ\rubl\Algo\Sortings\Sortings\obj\Debug\Sortings.exe
 E:\studying\2к18ММФБГУ\rubl\Algo\Sortings\Sortings\obj\Debug\Sortings.pdb
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\bin\Debug\Sortings.exe.config
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\bin\Debug\Sortings.exe
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\bin\Debug\Sortings.pdb
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\obj\Debug\Sortings.csprojResolveAssemblyReference.cache
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\obj\Debug\Sortings.csproj.CoreCompileInputs.cache
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\obj\Debug\Sortings.exe
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Sortings\Sortings\obj\Debug\Sortings.pdb
