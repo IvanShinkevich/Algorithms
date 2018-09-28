@@ -17,8 +17,19 @@ namespace TableSynchronizer
         {
             InitTables();
             PrintStructures(table1, table2);
-            Sort(table1);
-            PrintStructures(table1,table2);
+
+            var result = (from t1 in table1
+                          join t2 in table2 on t1.Name equals t2.Name
+                          select new TableRes { Name = t1.Name, Age = t1.Age, Property0 = t2.Property0, Property1 = t2.Property1, PropertyToBeDefined = t1.PropertyToBeDefined }).ToArray();
+                        
+            result = Merge_Sort(result);
+
+            table1 = (from res in result
+                       select new Table1 { Name = res.Name, Age = res.Age, PropertyToBeDefined = res.PropertyToBeDefined }).ToArray();
+            table2 = (from res in result
+                     select new Table2 { Name = res.Name, Property0 = res.Property0, Property1 = res.Property1 }).ToArray();
+            PrintStructures(table1, table2);
+            Console.ReadLine();
         }
 
         private static void InitTables()
@@ -104,6 +115,37 @@ namespace TableSynchronizer
             {
                 tbl2[i].Show();
             }
+
+            Console.WriteLine("-------------------");
+            Console.WriteLine("-------------------");
+        }
+
+        private static TableRes[] Merge_Sort(TableRes[] arr)
+        {
+            if (arr.Length == 1)
+                return arr;
+            int mid_point = arr.Length / 2;
+            return Merge(Merge_Sort(arr.Take(mid_point).ToArray()), Merge_Sort(arr.Skip(mid_point).ToArray()));
+        }
+
+        private static TableRes[] Merge(TableRes[] arr_1, TableRes[] arr_2)
+        {
+            int a = 0, b = 0;
+            TableRes[] merged = new TableRes[arr_1.Length + arr_2.Length];
+            for (int i = 0; i < arr_1.Length + arr_2.Length; i++)
+            {
+                if (b.CompareTo(arr_2.Length) < 0 && a.CompareTo(arr_1.Length) < 0)
+                    if (arr_1[a].Age > arr_2[b].Age)
+                        merged[i] = arr_2[b++];
+                    else
+                        merged[i] = arr_1[a++];
+                else
+                    if (b < arr_2.Length)
+                    merged[i] = arr_2[b++];
+                else
+                    merged[i] = arr_1[a++];
+            }
+            return merged;
         }
 
         struct Table1
@@ -128,6 +170,15 @@ namespace TableSynchronizer
             {
                 Console.WriteLine($"Name: {Name}, P0: {Property0}, P1: {Property1}");
             }
+        }
+
+        struct TableRes
+        {
+            public string Name;
+            public string Property0;
+            public string Property1;
+            public int Age;
+            public string PropertyToBeDefined;
         }
     }
 }
