@@ -82,7 +82,7 @@ namespace ConsoleApp1.Entities
                     root = null;
                     return root;
                 }
-                //No left child
+                //No left child 
                 else if (root.left == null)
                 {
                     BNode temp = root;
@@ -97,7 +97,7 @@ namespace ConsoleApp1.Entities
                 //Has both child nodes
                 else
                 {
-                    BNode min = FindMin(root.right);
+                    BNode min = FindMin2(root.right);
                     root.item = min.item;
                     root.right = DeleteN(root.right, min);
                 }
@@ -105,11 +105,11 @@ namespace ConsoleApp1.Entities
             return root;
         }
 
-        private BNode FindMin(BNode cur)
+        private BNode FindMin2(BNode cur)
         {
             if (cur.left != null)
             {
-                return FindMin(cur.left);
+                return FindMin2(cur.left);
             }
             return cur;
         }
@@ -241,21 +241,6 @@ namespace ConsoleApp1.Entities
                     Console.Write(" ".PadLeft(padding) + "\\\n");
                     Print(p.left, padding + 4);
                 }
-            }
-        }
-
-        public BNode InsertInRoot(BNode node,int val)
-        {
-            if (node == null) return new BNode(val);
-            if (val < node.item)
-            {
-                node.left = InsertInRoot(node.left, val);
-                return RotateRight(node);
-            }
-            else
-            {
-                node.right = InsertInRoot(node.right, val);
-                return RotateLeft(node);
             }
         }
     }
