@@ -4,65 +4,70 @@ namespace ConsoleApp1
 {
     class SearchHelper
     {
-        public int InterpolationSearch(int[] x, int searchValue)
+        public int InterpolationSearch(int[] array, int value)
         {
-            // Returns index of searchValue in sorted input data
-            // array x, or -1 if searchValue is not found
-            int low = 0;
-            int high = x.Length - 1;
-            int mid;
-
-            while (x[low] < searchValue && x[high] >= searchValue)
+            int index = -1;
+            int left = 0;
+            int right = array.Length - 1;
+            int middle;
+            while (array[left] < value && array[right] > value)
             {
-                mid = low + ((searchValue - x[low]) * (high - low)) / (x[high] - x[low]);
-
-                if (x[mid] < searchValue)
-                    low = mid + 1;
-                else if (x[mid] > searchValue)
-                    high = mid - 1;
-                else
-                    return mid;
-            }
-
-            if (x[low] == searchValue)
-                return low;
-            else
-                return -1; // Not found
-        }
-
-        public int BinarySearch(int x, int[] arr)
-        {
-            int i = 0;
-            int j = -1;
-            if (arr != null)
-            {
-                int start = 0, end = arr.Length, mid;
-                while (start < end)
+                middle = left + ((value - array[left]) * (right - left)) / (array[right] - array[left]);
+                if (value == array[middle])
                 {
-                    ++i;
-                    mid = (start + end) / 2;
-                    if (x == arr[mid])
-                    {
-                        j = mid;
-                        //Console.WriteLine(i + " iterations, position - " + j);
-                        break;
-                    }
-                    else
-                    {
-                        if (x < arr[mid])
-                        {
-                            end = mid;
-                        }
-                        else
-                        {
-                            start = mid + 1;
-                        }
-                    }
+                    index = middle;
+                    break;
+                }
+                else if (value > array[middle])
+                {
+                    left = middle + 1;
+                }
+                else {
+                    right = middle - 1;
                 }
             }
-            if (j == -1)
-                Console.WriteLine("Not found.");
-            return j;
+            if (array[left] == value)
+            {
+                index = left;
+            }
+            else if (array[right] == value)
+            {
+                index = right;
+            }
+            return index;
+        }
+
+        public int BinarySearch(int[] array, int val)
+        {
+            int index = -1;
+            int left = 0;
+            int right = array.Length - 1;
+            int middle;
+            while (array[left] < val && array[right] > val)
+            {
+                middle = left + (right - left) / 2;
+                if (val == array[middle])
+                {
+                    index = middle;
+                    break;
+                }
+                else if (val < array[middle])
+                {
+                    right = middle - 1;
+                }
+                else {
+                    left = middle + 1;
+                }
+            }
+            if (val == array[left])
+            {
+                index = left;
+            }
+            else if (val == array[right])
+            {
+                index = right;
+            }
+            return index;
         }
     }
 }
