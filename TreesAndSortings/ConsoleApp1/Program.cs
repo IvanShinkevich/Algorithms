@@ -77,17 +77,18 @@ namespace ConsoleApp1
             BTreePrinterPretty.Print(btr.Root);
 
             //btr.DeleteNode(6);
-            btr.rotateLeft(btr.Root);
+            btr._root = btr.RotateLeft(btr.Root);
             Console.WriteLine("space!");
             BTreePrinterPretty.Print(btr.Root);
             //btr.DeleteNode(13);
             //BTreePrinterPretty.Print(btr.Root);
             //btr.DeleteNode(11);
-            btr.rotateRight(btr.Root);
-            btr.rotateRight(btr.Root);
+            btr._root = btr.RotateRight(btr.Root);
+            btr._root = btr.RotateRight(btr.Root);
             BTreePrinterPretty.Print(btr.Root);
 
-
+            btr.InsertInRoot(5);
+            BTreePrinterPretty.Print(btr.Root);
             //BTreePrinterPretty.Print(btr.Root);
             //btr.DeleteNode(2);
             //BTreePrinterPretty.Print(btr.Root);
