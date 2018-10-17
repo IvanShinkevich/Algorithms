@@ -6,7 +6,7 @@ namespace ConsoleApp1.Entities
 {
     public class BTree
     {
-        private BNode _root;
+        public BNode _root;
         private int _count;
         private IComparer<int> _comparer = Comparer<int>.Default;
 
@@ -17,7 +17,49 @@ namespace ConsoleApp1.Entities
             _count = 0;
         }
 
-        
+        public BNode Search(int data)
+        {
+            BNode node = Search(_root, data);
+            return node;
+        }
+
+        private BNode Search(BNode node, int data)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+            if (data < node.item)
+            {
+                node.left = Search(node.left, data);
+            }
+            else if (data > node.item)
+            {
+                node.right = Search(node.right, data);
+            }
+            return node;
+        }
+
+        public bool ContainsNode(int data)
+        {
+            return ContainsNodeRecursive(_root, data);
+        }
+
+        private bool ContainsNodeRecursive(BNode node, int data)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+            if (data == node.item)
+            {
+                return true;
+            }
+            return data < node.item
+                ? ContainsNodeRecursive(node.left, data)
+                : ContainsNodeRecursive(node.right, data);
+        }
+
         private BNode DeleteN(BNode root, BNode deleteNode)
         {
             if (root == null)
@@ -40,7 +82,7 @@ namespace ConsoleApp1.Entities
                     root = null;
                     return root;
                 }
-                //No left child - DONT WORK
+                //No left child 
                 else if (root.left == null)
                 {
                     BNode temp = root;
@@ -78,66 +120,87 @@ namespace ConsoleApp1.Entities
             DeleteN(_root, deleteNode);
         }
 
-        public BNode rotateRight(BNode node)
+        public BNode RotateRight(BNode node)
         {
-            var oldroot = _root;
-            var newroot = _root.left;
+            var oldroot = node;
+            var newroot = node.left;
             oldroot.left = newroot.right;
             newroot.right = oldroot;
-            _root = newroot;
-            return node;
+            return newroot;
         }
 
-        public BNode rotateLeft(BNode node)
+        public BNode RotateLeft(BNode node)
         {
-            var oldroot = _root;
-            var newroot = _root.right;
+            var oldroot = node;
+            var newroot = node.right;
             oldroot.right = newroot.left;
             newroot.left = oldroot;
-            _root = newroot;
-            return node;
+            return newroot;
         }
 
-        public bool Add(int Item)
+        public void InsertInRoot(int data)
+        {
+            _root = InsertInRoot(data, _root);
+        }
+
+        private BNode InsertInRoot(int data, BNode root)
+        {
+            if (root == null)
+                return new BNode(data);
+            if (data < root.item)
+            {
+                root.left = InsertInRoot(data, root.left);
+                root = RotateRight(root);
+            }
+            else if (data > root.item)
+            {
+                root.right = InsertInRoot(data, root.right);
+                root = RotateLeft(root);
+            }
+            return root;
+
+        }
+
+        public bool Add(int data)
         {
             if (_root == null)
             {
-                _root = new BNode(Item);
+                _root = new BNode(data);
                 _count++;
                 return true;
             }
             else
             {
-                return Add_Sub(_root, Item);
+                return Add_Sub(_root, data);
             }
         }
 
-        private bool Add_Sub(BNode Node, int Item)
+        private bool Add_Sub(BNode node, int data)
         {
-            if (_comparer.Compare(Node.item, Item) < 0)
+            if (_comparer.Compare(node.item, data) < 0)
             {
-                if (Node.right == null)
+                if (node.right == null)
                 {
-                    Node.right = new BNode(Item);
+                    node.right = new BNode(data);
                     _count++;
                     return true;
                 }
                 else
                 {
-                    return Add_Sub(Node.right, Item);
+                    return Add_Sub(node.right, data);
                 }
             }
-            else if (_comparer.Compare(Node.item, Item) > 0)
+            else if (_comparer.Compare(node.item, data) > 0)
             {
-                if (Node.left == null)
+                if (node.left == null)
                 {
-                    Node.left = new BNode(Item);
+                    node.left = new BNode(data);
                     _count++;
                     return true;
                 }
                 else
                 {
-                    return Add_Sub(Node.left, Item);
+                    return Add_Sub(node.left, data);
                 }
             }
             else
@@ -178,21 +241,6 @@ namespace ConsoleApp1.Entities
                     Console.Write(" ".PadLeft(padding) + "\\\n");
                     Print(p.left, padding + 4);
                 }
-            }
-        }
-
-        public BNode InsertInRoot(BNode node,int val)
-        {
-            if (node == null) return new BNode(val);
-            if (val < node.item)
-            {
-                node.left = InsertInRoot(node.left, val);
-                return rotateRight(node);
-            }
-            else
-            {
-                node.right = InsertInRoot(node.right, val);
-                return rotateLeft(node);
             }
         }
     }

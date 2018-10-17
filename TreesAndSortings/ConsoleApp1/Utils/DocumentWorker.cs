@@ -12,7 +12,7 @@ namespace ConsoleApp1
             int[] arr = new int[n];
             for (int i = 0; i < n; i++)
             {
-                int value = rnd.Next(0, n);
+                int value = rnd.Next(0, 500);
                 arr[i] =  value;
             }
             return arr;

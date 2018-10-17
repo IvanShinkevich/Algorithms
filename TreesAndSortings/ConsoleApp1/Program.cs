@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using ConsoleApp1.Entities;
 using ConsoleApp1.Utils;
 
@@ -14,25 +15,22 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            //for (int j = 0; j < 30; j++)
-            //{
-            //    for (int i = 30; i > 1; i--)
-            //    {
-            //        int[] arr = dw.CreateArrayAndWriteToFile(i);
-            //        sort.Quicksort(arr, 0, arr.Length - 1);
+            for (int j = 0; j < 30; j++)
+            {
+                for (int i = 30; i > 1; i--)
+                {
+                    int[] arr = dw.CreateArrayAndWriteToFile(i);
+                    sort.Quicksort(arr, 0, arr.Length - 1);
 
-            //        if (CompareSearches(arr))
-            //        {
-            //            Console.WriteLine(i);
-            //        }
-            //    }
-            //}
-            //Console.WriteLine("End");
+                    if (CompareSearches(arr))
+                    {
+                        Console.WriteLine(i);
+                    }
+                }
+            }
+            Console.WriteLine("End");
 
-            //int[] arr1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10000000};
-            //Stopwatch stopwatch = Stopwatch.StartNew();
-            //searcher.InterpolationSearch(arr1, 9);
-            //stopwatch.Stop();
+            
             CreateAndFillBTree();
 
             Console.ReadLine();
@@ -40,21 +38,21 @@ namespace ConsoleApp1
 
         private static bool CompareSearches(int[] arr)
         {
-            var watch1 = System.Diagnostics.Stopwatch.StartNew();
-
+            var watch1 = Stopwatch.StartNew();
             searcher.InterpolationSearch(arr, 5);
             watch1.Stop();
-            //Console.WriteLine((int)stopwatch.ElapsedMilliseconds);
+            var tik = watch1.ElapsedTicks;
+
 
             var watch2 = Stopwatch.StartNew();
-            searcher.BinarySearch(5, arr);
+            searcher.BinarySearch(arr, 5);
             watch2.Stop();
-            //Console.WriteLine((int)stopwatch2.ElapsedMilliseconds);
-            Console.WriteLine(watch1.ElapsedMilliseconds);
-            Console.WriteLine(watch2.ElapsedMilliseconds);Console.WriteLine("-----------------");
+            var ti = watch2.ElapsedTicks;
 
 
-            return watch1.ElapsedMilliseconds < watch2.ElapsedMilliseconds;
+            //Console.WriteLine(tik + " " + ti);
+            
+            return tik > ti;
         }
 
         private static void CreateAndFillBTree()
@@ -77,17 +75,18 @@ namespace ConsoleApp1
             BTreePrinterPretty.Print(btr.Root);
 
             //btr.DeleteNode(6);
-            btr.rotateLeft(btr.Root);
+            btr._root = btr.RotateLeft(btr.Root);
             Console.WriteLine("space!");
             BTreePrinterPretty.Print(btr.Root);
             //btr.DeleteNode(13);
             //BTreePrinterPretty.Print(btr.Root);
             //btr.DeleteNode(11);
-            btr.rotateRight(btr.Root);
-            btr.rotateRight(btr.Root);
+            btr._root = btr.RotateRight(btr.Root);
+            btr._root = btr.RotateRight(btr.Root);
             BTreePrinterPretty.Print(btr.Root);
 
-
+            btr.InsertInRoot(5);
+            BTreePrinterPretty.Print(btr.Root);
             //BTreePrinterPretty.Print(btr.Root);
             //btr.DeleteNode(2);
             //BTreePrinterPretty.Print(btr.Root);
