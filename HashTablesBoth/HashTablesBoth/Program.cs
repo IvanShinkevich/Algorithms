@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HashTablesBoth.Entities;
 
 namespace HashTablesBoth
 {
     class Program
     {
-        //public double A = 0.6180339887;
         public static int M = 1000;
+
 
         public static double[] definedConst =
         {
@@ -31,35 +28,20 @@ namespace HashTablesBoth
                 for (int j = 0; j < 50; j++)
                 {
                     ReadAndMeasureChains(j, definedConst[i]);
-                }
-                
+                }  
             }
-
-
-            // Создаем новую хеш таблицу.
-            var hashTable = new HashTableWithChains();
-
-            // Добавляем данные в хеш таблицу в виде пар Ключ-Значение.
-            hashTable.Insert(1, "I never wished you any sort of harm; but you wanted me to tame you...");
-            hashTable.Insert(3, "And now here is my secret, a very simple secret: It is only with the heart that one can see rightly; what is essential is invisible to the eye.");
-            hashTable.Insert(2, "Well, I must endure the presence of two or three caterpillars if I wish to become acquainted with the butterflies.");
-            hashTable.Insert(15, "He did not know how the world is simplified for kings. To them, all men are subjects.");
-
-            // Выводим хранимые значения на экран.
-            HashTableWithChains.ShowHashTable(hashTable, "Created hashtable.");
-            Console.ReadLine();
-
-            // Удаляем элемент из хеш таблицы по ключу
-            // и выводим измененную таблицу на экран.
-            hashTable.Delete(2);
-            HashTableWithChains.ShowHashTable(hashTable, "Delete item from hashtable.");
-            Console.ReadLine();
-
-            // Получаем хранимое значение из таблицы по ключу.
-            Console.WriteLine("Little Prince say:");
-            var text = hashTable.Search(1);
-            Console.WriteLine(text);
-            Console.ReadLine();
+            Console.WriteLine("Second type of table - with open adresses and non-linear insertion alg");
+            for (int j = 0; j < 1; j++)
+            {
+                var arr = ReadArray(j);
+                HashTableWithOpenAdresses table = new HashTableWithOpenAdresses(1024);
+                foreach (var item in arr)
+                {
+                    table.Insert(item, item);
+                }
+                table.ShowTable();
+            }
+            Console.ReadKey();
         }
 
         private static void WriteToFile(int[] arr, int fileNum)
@@ -82,7 +64,6 @@ namespace HashTablesBoth
                 {
                     i--;
                 }
-                
             }
             return arr;
         }

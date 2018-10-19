@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\HashTableWithChains.cs" />
+    <Compile Include="Entities\HashTableWithOpenAdresses.cs" />
     <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\Pair.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

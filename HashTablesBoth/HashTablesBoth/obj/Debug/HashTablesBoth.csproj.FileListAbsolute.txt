@@ -5,3 +5,17 @@ D:\Views\Mine\Algs\Algs\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashT
 D:\Views\Mine\Algs\Algs\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.csproj.CoreCompileInputs.cache
 D:\Views\Mine\Algs\Algs\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.exe
 D:\Views\Mine\Algs\Algs\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.pdb
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\bin\Debug\HashTablesBoth.exe.config
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\bin\Debug\HashTablesBoth.exe
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\bin\Debug\HashTablesBoth.pdb
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.csprojAssemblyReference.cache
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.csproj.CoreCompileInputs.cache
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.exe
+C:\Users\Irina\Desktop\alg\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.pdb
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\bin\Debug\HashTablesBoth.exe.config
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\bin\Debug\HashTablesBoth.exe
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\bin\Debug\HashTablesBoth.pdb
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.csprojResolveAssemblyReference.cache
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.csproj.CoreCompileInputs.cache
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.exe
+E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\HashTablesBoth\HashTablesBoth\obj\Debug\HashTablesBoth.pdb
