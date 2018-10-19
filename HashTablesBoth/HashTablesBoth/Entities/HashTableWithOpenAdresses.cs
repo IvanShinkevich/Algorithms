@@ -40,15 +40,14 @@ namespace HashTablesBoth.Entities
             int i = 1;
             try
             {
-                
-                if (table[h] == null || table[h].isDeleted())
+                if (table[h] == null)
                 {
                     table[h] = new Pair(key, value);
                 }
                 else if (table[h].getValue() != value)
                 {
                     int newHash = (h + i) % M;
-                    while (table[newHash] == null || table[newHash].isDeleted() && table[newHash].getValue() != value) {
+                    while (table[newHash] == null || table[newHash].getValue() != value) {
                         newHash = (h + i * i) % M;
                         i += 1;
                         if (table[newHash] == null || table[newHash].getValue() != value)
@@ -71,11 +70,11 @@ namespace HashTablesBoth.Entities
                 {
                     table[h].deletePair();
                 }
-                for (int i = h + 1; i != h; i = (i + 1) % table.Length)
+                for (int i = h + 1; i != h; h=(h + i * i) % M)
                 {
-                    if (table[i].getValue() == key && !table[i].isDeleted())
+                    if (table[h].getValue() == key && !table[h].isDeleted())
                     {
-                        table[i].deletePair();
+                        table[h].deletePair();
                     }
                 }
             }
@@ -116,7 +115,7 @@ namespace HashTablesBoth.Entities
 
             private int GetHash(int x)
         {
-            return (int)Math.Floor((x * 1.0 % Prime * A) % 1 * M);
+            return (int)Math.Floor((x * 1.0 % Prime * A) % 1 * 1000);
         }
     }
 }
