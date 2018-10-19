@@ -12,10 +12,6 @@ namespace HashTablesBoth.Entities
         private double Prime = 3571;
         public double A = 0.6180339887;
         public int M = 1000;
-        /// <summary>
-        /// Максимальная длина ключевого поля.
-        /// </summary>
-        private readonly byte _maxSize = 255;
 
         /// <summary>
         /// Коллекция хранимых данных.
@@ -47,12 +43,6 @@ namespace HashTablesBoth.Entities
         /// <param name="value"> Хранимые данные. </param>
         public void Insert(int key, string value)
         {
-            
-            //if (key>1000)
-            //{
-            //    throw new ArgumentException($"Максимальная длинна ключа составляет {_maxSize} символов.", nameof(key));
-            //}
-
             // Создаем новый экземпляр данных.
             var item = new Item(key, value);
 
@@ -129,17 +119,6 @@ namespace HashTablesBoth.Entities
         /// <returns> Найденные по ключу хранимые данные. </returns>
         public string Search(int key)
         {
-            // Проверяем входные данные на корректность.
-            //if (string.IsNullOrEmpty(key))
-            //{
-            //    throw new ArgumentNullException(nameof(key));
-            //}
-
-            //if (key.Length > _maxSize)
-            //{
-            //    throw new ArgumentException($"Максимальная длинна ключа составляет {_maxSize} символов.", nameof(key));
-            //}
-
             // Получаем хеш ключа.
             var hash = GetHash(key);
 
@@ -180,22 +159,8 @@ namespace HashTablesBoth.Entities
         /// <param name="value"> Хешируемая строка. </param>
         /// <returns> Хеш строки. </returns>
         private int GetHash(int value)
-        {
-            // Проверяем входные данные на корректность.
-            //if (string.IsNullOrEmpty(value))
-            //{
-            //    throw new ArgumentNullException(nameof(value));
-            //}
-
-            //if (value.Length > _maxSize)
-            //{
-            //    throw new ArgumentException($"Максимальная длинна ключа составляет {_maxSize} символов.", nameof(value));
-            //}
-
-            // Получаем длину строки.
-            
+        {     
             return (int)Math.Floor((value*1.0 % Prime * A) % 1 * M);
-            //return hash;
         }
 
         /// <summary>
@@ -242,7 +207,6 @@ namespace HashTablesBoth.Entities
                     largestChainLength = keyValuePair.Value.Count;
                 }
             }
-
             return largestChainLength;
         }
     }
