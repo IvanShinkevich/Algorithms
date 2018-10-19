@@ -17,7 +17,7 @@ namespace HashTablesBoth.Utils
             var rnd = new Random();
             for (int i = 0; i < arrSize; i++)
             {
-                int val = rnd.Next(0, arrSize * arrSize * arrSize);
+                int val = rnd.Next(0, arrSize * 2);
                 if (!arr.Contains(val))
                 {
                     arr[i] = val;
