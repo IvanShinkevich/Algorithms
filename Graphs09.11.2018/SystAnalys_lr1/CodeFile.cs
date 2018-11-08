@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SystAnalys_lr1
 {
-    class Vertex
+    public class Vertex
     {
         public int x, y;
 
@@ -21,7 +21,7 @@ namespace SystAnalys_lr1
         }
     }
 
-    class Weight
+    public class Weight
     {
         public int v1, v2;
         public String value;
@@ -34,7 +34,7 @@ namespace SystAnalys_lr1
         }
     }
 
-    class Edge
+    public class Edge
     {
         public int v1, v2;
 
@@ -45,7 +45,7 @@ namespace SystAnalys_lr1
         }
     }
 
-    class DrawGraph
+    public class DrawGraph
     {
         Bitmap bitmap;
         Pen blackPen;
@@ -152,41 +152,5 @@ namespace SystAnalys_lr1
                 drawVertex(v[i].x, v[i].y, (i + 1).ToString());
             }
         }
-
-        //заполняет матрицу смежности
-        public void fillAdjacencyMatrix(int numberV, List<Edge> E, int[,] matrix, List<Weight> W)
-        {
-            for (int i = 0; i < numberV; i++)
-                for (int j = 0; j < numberV; j++)
-                    matrix[i, j] = 0;
-            for (int i = 0; i < E.Count; i++)
-            {
-                for (int j = 0; j < W.Count; j++)
-                {
-                    if (W[j].v1 == E[i].v1 && W[j].v2 == E[i].v2)
-                    {
-                        matrix[E[i].v1, E[i].v2] = Convert.ToInt32(W[j].value);
-                        matrix[E[i].v2, E[i].v1] = Convert.ToInt32(W[j].value);
-                    }
-                }
-
-            }
-        }
-
-        //заполняет матрицу инцидентности
-        public void fillIncidenceMatrix(int numberV, List<Edge> E, int[,] matrix)
-        {
-            for (int i = 0; i < numberV; i++)
-                for (int j = 0; j < E.Count; j++)
-                    matrix[i, j] = 0;
-            for (int i = 0; i < E.Count; i++)
-            {
-                matrix[E[i].v1, i] = 1;
-                matrix[E[i].v2, i] = 1;
-                    
-            }
-        }
-
-        
     }
 }

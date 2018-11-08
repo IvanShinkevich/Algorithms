@@ -1,14 +1,9 @@
-﻿using System;
+﻿using SystAnalys_lr1.Services;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Collections;
 
 namespace SystAnalys_lr1
 {
@@ -19,9 +14,10 @@ namespace SystAnalys_lr1
         List<Edge> E;
         List<String> Value;
         List<Weight> W;
-        List<int> Euler;
+        
         int[,] AMatrix; //матрица смежности
         int[,] IMatrix; //матрица инцидентности
+        List<int> Euler;
         int[,] e;
         int selected1; //выбранные вершины, для соединения линиями
         int selected2;
@@ -103,9 +99,7 @@ namespace SystAnalys_lr1
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E, W);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V, E, W);
             selected1 = -1;
         }
 
@@ -116,9 +110,7 @@ namespace SystAnalys_lr1
             selectButton.Enabled = true;
             drawEdgeButton.Enabled = true;
             deleteButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E, W);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V, E, W);
         }
 
         //кнопка - рисовать ребро
@@ -128,9 +120,7 @@ namespace SystAnalys_lr1
             selectButton.Enabled = true;
             drawVertexButton.Enabled = true;
             deleteButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E, W);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V, E, W);
             selected1 = -1;
             selected2 = -1;
         }
@@ -142,9 +132,7 @@ namespace SystAnalys_lr1
             selectButton.Enabled = true;
             drawVertexButton.Enabled = true;
             drawEdgeButton.Enabled = true;
-            G.clearSheet();
-            G.drawALLGraph(V, E, W);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V, E, W);
         }
 
         //кнопка - удалить граф
@@ -321,9 +309,7 @@ namespace SystAnalys_lr1
                 //если что-то было удалено, то обновляем граф на экране
                 if (flag)
                 {
-                    G.clearSheet();
-                    G.drawALLGraph(V, E, W);
-                    sheet.Image = G.GetBitmap();
+                    DrawGraph(V, E, W);
                 }
             }
         }
@@ -331,99 +317,15 @@ namespace SystAnalys_lr1
         //создание матрицы смежности и вывод в листбокс
         private void createAdjAndOut()
         {
-            AMatrix = new int[V.Count, V.Count];
-            G.fillAdjacencyMatrix(V.Count, E, AMatrix, W);
-            listBoxMatrix.Items.Clear();
-            string sOut = "    ";
-            for (int i = 0; i < V.Count; i++)
-                sOut += (i + 1) + " ";
-            listBoxMatrix.Items.Add(sOut);
-            for (int i = 0; i < V.Count; i++)
-            {
-                sOut = (i + 1) + " | ";
-                for (int j = 0; j < V.Count; j++)
-                    sOut += AMatrix[i, j] + " ";
-                listBoxMatrix.Items.Add(sOut);
-            }
-            int k = 0;
-            bool isEuler = true;
-            for (int i = 0; i < V.Count; i++)
-            {
-                for (int j = 0; j < V.Count; j++)
-                {
-                    if(AMatrix[i,j] != 0)
-                    {
-                        k++;
-                    }
-                }
-                if (k%2 != 0 || k == 0)
-                {
-                    isEuler = false;
-                    break;
-                }
-                k = 0;
-            }
-            listBoxMatrix.Items.Add("Эйлеров цикл существует? - "+ isEuler.ToString());
-           
-            if (isEuler)
-            {
-                e = new int[V.Count, V.Count];
-                euler(0, AMatrix);
-            }
-
-            BFS();
-        }
-
-        private void euler(int i, int[,] AMatrix)
-        {
-            if (Euler.Count == 0)
-            {
-                Euler.Add(0); //начинаем с 1ой вершины
-            }
-            for (int j = 0; j < V.Count; j++) //для каждого i идем по строке в мце см-ти
-            {
-                if (AMatrix[i, j] != 0 && e[i, j] == 0) //если ещё не занесли
-                {
-                    Euler.Add(j); 
-                    e[i, j] = 1;
-                    e[j, i] = 1;
-                    if ((j == 0) && (Euler.Count == V.Count + 1))
-                    {
-                        var str = string.Empty;
-                        Euler.ForEach(el => { str += (el + 1) + " "; });
-                        Euler = new List<int>();
-                        listBoxMatrix.Items.Add("Eilerov cikl naiden:\n" + str);
-                    }
-                    else
-                    {
-                        euler(j, AMatrix);
-                    }
-                }
-            }
+            MatrixService mService = new MatrixService();
+            AMatrix = mService.CreateAdjAndOut(V, E, W, listBoxMatrix);
         }
 
         //создание матрицы инцидентности и вывод в листбокс
         private void createIncAndOut()
         {
-            if (E.Count > 0)
-            {
-                IMatrix = new int[V.Count, E.Count];
-                G.fillIncidenceMatrix(V.Count, E, IMatrix);
-                listBoxMatrix.Items.Clear();
-                string sOut = "    ";
-                for (int i = 0; i < E.Count; i++)
-                    sOut += (char)('a' + i) + " ";
-                listBoxMatrix.Items.Add(sOut);
-                for (int i = 0; i < V.Count; i++)
-                {
-                    sOut = (i + 1) + " | ";
-                    for (int j = 0; j < E.Count; j++)
-                        sOut += IMatrix[i, j] + " ";
-                    listBoxMatrix.Items.Add(sOut);
-                }
-            }
-            else
-                listBoxMatrix.Items.Clear();
+            MatrixService mService = new MatrixService();
+            IMatrix = mService.CreateIncidenceMatrixAndOut(V, E, IMatrix, listBoxMatrix);
         }
 
         //поиск элементарных цепей
@@ -470,81 +372,10 @@ namespace SystAnalys_lr1
         //поиск элементарных циклов
         private void cycleButton_Click(object sender, EventArgs e)
         {
-            GetAndPrintCycles(E);
+            DFSService dfsService = new DFSService();
+            dfsService.GetAndPrintCycles(V, E, listBoxMatrix);
         }
-
-        private void GetAndPrintCycles(List<Edge> edges)
-        {
-            listBoxMatrix.Items.Clear();
-            //1-white 2-black
-            int[] color = new int[V.Count];
-            for (int i = 0; i < V.Count; i++)
-            {
-                for (int k = 0; k < V.Count; k++)
-                    color[k] = 1;
-                List<int> cycle = new List<int>();
-                cycle.Add(i + 1);
-                DFScycle(i, i, edges, color, -1, cycle);
-            }
-        }
-
-        //обход в глубину. поиск элементарных циклов. (1-white 2-black)
-        //Вершину, для которой ищем цикл, перекрашивать в черный не будем. Поэтому, для избежания неправильной
-        //работы программы, введем переменную unavailableEdge, в которой будет хранится номер ребра, исключаемый
-        //из рассмотрения при обходе графа. В действительности это необходимо только на первом уровне рекурсии,
-        //чтобы избежать вывода некорректных циклов вида: 1-2-1, при наличии, например, всего двух вершин.
-
-        private void DFScycle(int u, int endV, List<Edge> edges, int[] color, int unavailableEdge, List<int> cycle)
-        {
-            //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемся, а вернуться необходимо
-            if (u != endV)
-                color[u] = 2;
-            else
-            {
-                if (cycle.Count >= 2)
-                {
-                    cycle.Reverse();
-                    string s = cycle[0].ToString();
-                    for (int i = 1; i < cycle.Count; i++)
-                        s += "-" + cycle[i].ToString();
-                    bool flag = false; //есть ли палиндром для этого цикла графа в листбоксе?
-                    for (int i = 0; i < listBoxMatrix.Items.Count; i++)
-                        if (listBoxMatrix.Items[i].ToString() == s)
-                        {
-                            flag = true;
-                            break;
-                        }
-                    if (!flag)
-                    {
-                        cycle.Reverse();
-                        s = cycle[0].ToString();
-                        for (int i = 1; i < cycle.Count; i++)
-                            s += "-" + cycle[i].ToString();
-                        listBoxMatrix.Items.Add(s);
-                    }
-                    return;
-                }
-            }
-            for (int w = 0; w < edges.Count; w++)
-            {
-                if (w == unavailableEdge)
-                    continue;
-                if (color[edges[w].v2] == 1 && edges[w].v1 == u)
-                {
-                    List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(edges[w].v2 + 1);
-                    DFScycle(edges[w].v2, endV, edges, color, w, cycleNEW);
-                    color[edges[w].v2] = 1;
-                }
-                else if (color[edges[w].v1] == 1 && edges[w].v2 == u)
-                {
-                    List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(edges[w].v1 + 1);
-                    DFScycle(edges[w].v1, endV, edges, color, w, cycleNEW);
-                    color[edges[w].v1] = 1;
-                }
-            }
-        }
+        
         private void saveButton_Click(object sender, EventArgs e)
         {
             if (sheet.Image != null)
@@ -576,119 +407,6 @@ namespace SystAnalys_lr1
             {
                 this.Value.Add(textBox1.Text);
             }
-        }
-
-        private List<List<int>> linkedComponentsList;
-        public void BFS()
-        {
-            List<int> firstShare = new List<int>();//firstComponent
-            List<int> secondShare = new List<int>();//firstComponent
-            linkedComponentsList = new List<List<int>>();
-            List<int> listOfNotVisitedVertices = new List<int>();
-            bool isBichromatic = true;
-            for (int i = 0; i < V.Count; i++)
-            {
-                listOfNotVisitedVertices.Add(i);
-            }
-            for(int i = 0; i < V.Count; i++)
-            {
-                if (!(listOfNotVisitedVertices.Count == 0))
-                {
-                    linkedComponentsList.Add(new List<int>());
-                    int first = listOfNotVisitedVertices[0];
-                    linkedComponentsList[linkedComponentsList.Count - 1].Add(first);
-                    listOfNotVisitedVertices.Remove(0);
-                    Queue<int> queue = new Queue<int>();
-                    queue.Enqueue(first);
-                    firstShare.Add(first);
-                    while (!(queue.Count == 0))
-                    {
-                        int temp = queue.Dequeue();
-                        var adjacencyList = GetAdjacencyOfVertex(temp); ;
-                        if(adjacencyList.Count == 0)
-                        {
-                            continue;
-                        }
-                        foreach(var el in adjacencyList)
-                        {
-                            if (listOfNotVisitedVertices.IndexOf(el) != -1)
-                            {
-                                if (secondShare.IndexOf(temp) != -1)
-                                {
-                                    firstShare.Add(el);
-                                }
-                                else
-                                {
-                                    secondShare.Add(el);
-                                }
-                                linkedComponentsList[linkedComponentsList.Count - 1].Add(el);
-                                listOfNotVisitedVertices.Remove(el);
-                                queue.Enqueue(el);
-                            }
-                            else
-                            {
-                                if (secondShare.IndexOf(temp) != -1 && secondShare.IndexOf(el) != -1)
-                                {
-                                    isBichromatic = false;
-                                }
-                                else if (firstShare.IndexOf(temp) != -1 && firstShare.IndexOf(el) != -1)
-                                {
-                                    isBichromatic = false;
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
-            if (linkedComponentsList.Count != 1)
-            {
-                isBichromatic = false;
-            }
-            listBoxMatrix.Items.Add("Linked components\n");
-            for (int i = 0; i < linkedComponentsList.Count(); i++)
-            {
-                listBoxMatrix.Items.Add(i + ":\n");
-                for (int j = 0; j < linkedComponentsList[i].Count; j++)
-                {
-                    listBoxMatrix.Items.Add(linkedComponentsList[i][j] + " ");
-                }
-                listBoxMatrix.Items.Add("\n");
-            }
-            if (isBichromatic)
-            {
-                listBoxMatrix.Items.Add("Двудольный граф\n"+"Первая доля:\n");
-                foreach(var el in firstShare)
-                {
-                    listBoxMatrix.Items.Add(el + " ");
-                }
-                listBoxMatrix.Items.Add("\nВторая доля:\n");
-                foreach (var el in secondShare)
-                {
-                    listBoxMatrix.Items.Add(el + " ");
-                }
-                listBoxMatrix.Items.Add("\n");
-            }
-            else
-            {
-                listBoxMatrix.Items.Add("Не двудольный граф");
-            }
-        }
-
-        private List<int> GetAdjacencyOfVertex(int vertex)
-        {
-            List<int> adjOfVertex = new List<int>();
-            for(int i = 0; i < V.Count; i++)
-            {
-                if (AMatrix[vertex, i] == 1)
-                {
-                    adjOfVertex.Add(i);
-                }
-            }
-            return adjOfVertex;
         }
 
         private List<Weight> algorithmByPrim(List<Weight> E, List<Weight> MST)
@@ -759,25 +477,19 @@ namespace SystAnalys_lr1
         {
             var weights = algorithmByPrim(W, new List<Weight>());
             var edges = SynchronizeEdgesAndWeights(weights);
-            G.clearSheet();
-            G.drawALLGraph(V, edges, weights);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V, edges, weights);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             var weights = Kruskal();
             var edges = SynchronizeEdgesAndWeights(weights);
-            G.clearSheet();
-            G.drawALLGraph(V, edges, weights);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V, edges, weights);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            G.clearSheet();
-            G.drawALLGraph(V, E, W);
-            sheet.Image = G.GetBitmap();
+            DrawGraph(V,E,W);
         }
 
         private void button3_Click_1(object sender, EventArgs e)
@@ -788,10 +500,16 @@ namespace SystAnalys_lr1
             var resultWeights = weightsByPrime.Union(weightsByKruskal).ToList();
             var edges = SynchronizeEdgesAndWeights(resultWeights);
 
-            GetAndPrintCycles(edges);
+            var dfsService = new DFSService();
 
+            dfsService.GetAndPrintCycles(V, edges, listBoxMatrix);
+            DrawGraph(V, edges, resultWeights);            
+        }
+
+        private void DrawGraph(List<Vertex> vertices, List<Edge> edges, List<Weight> weights)
+        {
             G.clearSheet();
-            G.drawALLGraph(V, edges, resultWeights);
+            G.drawALLGraph(vertices, edges, weights);
             sheet.Image = G.GetBitmap();
         }
     }    
