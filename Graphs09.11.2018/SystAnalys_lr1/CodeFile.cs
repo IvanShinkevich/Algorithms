@@ -72,6 +72,12 @@ namespace SystAnalys_lr1
             br = Brushes.Black;
         }
 
+        public struct Subset
+        {
+            public int Parent;
+            public int Rank;
+        }
+
         public Bitmap GetBitmap()
         {
             return bitmap;
@@ -114,33 +120,36 @@ namespace SystAnalys_lr1
             }
         }
 
-        public void drawALLGraph(List<Vertex> V, List<Edge> E, List<Weight> W)
+        public void drawALLGraph(List<Vertex> v, List<Edge> e, List<Weight> w)
         {
             //рисуем ребра
-            for (int i = 0; i < E.Count; i++)
+            for (int i = 0; i < e.Count; i++)
             {
-                if (E[i].v1 == E[i].v2)
+                if (e[i].v1 == e[i].v2)
                 {
-                    gr.DrawArc(darkGoldPen, (V[E[i].v1].x - 2 * R), (V[E[i].v1].y - 2 * R), 2 * R, 2 * R, 90, 270);
-                    point = new PointF(V[E[i].v1].x - (int)(2.75 * R), V[E[i].v1].y - (int)(2.75 * R));
+                    gr.DrawArc(darkGoldPen, (v[e[i].v1].x - 2 * R), (v[e[i].v1].y - 2 * R), 2 * R, 2 * R, 90, 270);
+                    point = new PointF(v[e[i].v1].x - (int)(2.75 * R), v[e[i].v1].y - (int)(2.75 * R));
                 }
                 else
                 {
-                    gr.DrawLine(darkGoldPen, V[E[i].v1].x, V[E[i].v1].y, V[E[i].v2].x, V[E[i].v2].y);
-                    point = new PointF((V[E[i].v1].x + V[E[i].v2].x) / 2, (V[E[i].v1].y + V[E[i].v2].y) / 2);
-                    for (int j = 0; j < W.Count; j++)
+                    gr.DrawLine(darkGoldPen, v[e[i].v1].x, v[e[i].v1].y, v[e[i].v2].x, v[e[i].v2].y);
+                    point = new PointF(((float)(v[e[i].v1].x + v[e[i].v2].x)) / 2, (float)(v[e[i].v1].y + v[e[i].v2].y) / 2);
+                    for (int j = 0; j < w.Count; j++)
                     {
-                        if (W[i].v1 == E[i].v1 && W[i].v2 == E[i].v2)
+                        if (w[j] != null)
                         {
-                            gr.DrawString((W[i].value).ToString(), fo, br, point);
+                            if (w[j].v1 == e[i].v1 && w[j].v2 == e[i].v2)
+                            {
+                                gr.DrawString((w[i].value).ToString(), fo, br, point);
+                            }
                         }
                     }
                 }
             }
             //рисуем вершины
-            for (int i = 0; i < V.Count; i++)
+            for (int i = 0; i < v.Count; i++)
             {
-                drawVertex(V[i].x, V[i].y, (i + 1).ToString());
+                drawVertex(v[i].x, v[i].y, (i + 1).ToString());
             }
         }
 

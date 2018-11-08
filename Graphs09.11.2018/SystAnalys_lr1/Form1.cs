@@ -39,6 +39,63 @@ namespace SystAnalys_lr1
             sheet.Image = G.GetBitmap();
         }
 
+        private static int Find(DrawGraph.Subset[] subsets, int i)
+        {
+            if (subsets[i].Parent != i)
+                subsets[i].Parent = Find(subsets, subsets[i].Parent);
+
+            return subsets[i].Parent;
+        }
+
+        private static void Union(DrawGraph.Subset[] subsets, int x, int y)
+        {
+            int xroot = Find(subsets, x);
+            int yroot = Find(subsets, y);
+
+            if (subsets[xroot].Rank < subsets[yroot].Rank)
+                subsets[xroot].Parent = yroot;
+            else if (subsets[xroot].Rank > subsets[yroot].Rank)
+                subsets[yroot].Parent = xroot;
+            else
+            {
+                subsets[yroot].Parent = xroot;
+                ++subsets[xroot].Rank;
+            }
+        }
+
+        private List<Weight> Kruskal()
+        {
+            int verticesCount = V.Count;
+            Weight[] result = new Weight[verticesCount];
+            int i = 0;
+            int e = 0;
+            
+            W = W.OrderBy(edge => Convert.ToInt32(edge.value)).ToList();
+           
+            DrawGraph.Subset[] subsets = new DrawGraph.Subset[verticesCount];
+
+            for (int v = 0; v < verticesCount; ++v)
+            {
+                subsets[v].Parent = v;
+                subsets[v].Rank = 0;
+            }
+
+            while (e < verticesCount - 1)
+            {
+                var nextEdge = W[i++];
+                int x = Find(subsets, nextEdge.v1);
+                int y = Find(subsets, nextEdge.v2);
+
+                if (x != y)
+                {
+                    result[e++] = nextEdge;
+                    Union(subsets, x, y);
+                }
+            }
+
+            return result.ToList();
+        }
+
         //кнопка - выбрать вершину
         private void selectButton_Click(object sender, EventArgs e)
         {
@@ -413,6 +470,11 @@ namespace SystAnalys_lr1
         //поиск элементарных циклов
         private void cycleButton_Click(object sender, EventArgs e)
         {
+            GetAndPrintCycles(E);
+        }
+
+        private void GetAndPrintCycles(List<Edge> edges)
+        {
             listBoxMatrix.Items.Clear();
             //1-white 2-black
             int[] color = new int[V.Count];
@@ -422,7 +484,7 @@ namespace SystAnalys_lr1
                     color[k] = 1;
                 List<int> cycle = new List<int>();
                 cycle.Add(i + 1);
-                DFScycle(i, i, E, color, -1, cycle);
+                DFScycle(i, i, edges, color, -1, cycle);
             }
         }
 
@@ -432,7 +494,7 @@ namespace SystAnalys_lr1
         //из рассмотрения при обходе графа. В действительности это необходимо только на первом уровне рекурсии,
         //чтобы избежать вывода некорректных циклов вида: 1-2-1, при наличии, например, всего двух вершин.
 
-        private void DFScycle(int u, int endV, List<Edge> E, int[] color, int unavailableEdge, List<int> cycle)
+        private void DFScycle(int u, int endV, List<Edge> edges, int[] color, int unavailableEdge, List<int> cycle)
         {
             //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемся, а вернуться необходимо
             if (u != endV)
@@ -463,23 +525,23 @@ namespace SystAnalys_lr1
                     return;
                 }
             }
-            for (int w = 0; w < E.Count; w++)
+            for (int w = 0; w < edges.Count; w++)
             {
                 if (w == unavailableEdge)
                     continue;
-                if (color[E[w].v2] == 1 && E[w].v1 == u)
+                if (color[edges[w].v2] == 1 && edges[w].v1 == u)
                 {
                     List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(E[w].v2 + 1);
-                    DFScycle(E[w].v2, endV, E, color, w, cycleNEW);
-                    color[E[w].v2] = 1;
+                    cycleNEW.Add(edges[w].v2 + 1);
+                    DFScycle(edges[w].v2, endV, edges, color, w, cycleNEW);
+                    color[edges[w].v2] = 1;
                 }
-                else if (color[E[w].v1] == 1 && E[w].v2 == u)
+                else if (color[edges[w].v1] == 1 && edges[w].v2 == u)
                 {
                     List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(E[w].v1 + 1);
-                    DFScycle(E[w].v1, endV, E, color, w, cycleNEW);
-                    color[E[w].v1] = 1;
+                    cycleNEW.Add(edges[w].v1 + 1);
+                    DFScycle(edges[w].v1, endV, edges, color, w, cycleNEW);
+                    color[edges[w].v1] = 1;
                 }
             }
         }
@@ -679,24 +741,58 @@ namespace SystAnalys_lr1
             return MST;
         }
 
+        private List<Edge> SynchronizeEdgesAndWeights(List<Weight> weights)
+        {
+            var edges = new List<Edge>();
+            foreach (var weight in weights)
+            {
+                if (weight != null)
+                { 
+                    edges.Add(new Edge(weight.v1, weight.v2));
+                }
+            }
+
+            return edges;
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-           var el = algorithmByPrim(W,new List<Weight>());
-            W = el;
-            SynchronizeEdgesAndWeights();
+            var weights = algorithmByPrim(W, new List<Weight>());
+            var edges = SynchronizeEdgesAndWeights(weights);
+            G.clearSheet();
+            G.drawALLGraph(V, edges, weights);
+            sheet.Image = G.GetBitmap();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var weights = Kruskal();
+            var edges = SynchronizeEdgesAndWeights(weights);
+            G.clearSheet();
+            G.drawALLGraph(V, edges, weights);
+            sheet.Image = G.GetBitmap();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
             G.clearSheet();
             G.drawALLGraph(V, E, W);
             sheet.Image = G.GetBitmap();
         }
 
-        private void SynchronizeEdgesAndWeights()
+        private void button3_Click_1(object sender, EventArgs e)
         {
-            E = new List<Edge>();
-            foreach(var weigth in W)
-            {
-                E.Add(new Edge(weigth.v1, weigth.v2));
-            }
+            var weightsByPrime = algorithmByPrim(W, new List<Weight>());
+            var weightsByKruskal = Kruskal();
+
+            var resultWeights = weightsByPrime.Union(weightsByKruskal).ToList();
+            var edges = SynchronizeEdgesAndWeights(resultWeights);
+
+            GetAndPrintCycles(edges);
+
+            G.clearSheet();
+            G.drawALLGraph(V, edges, resultWeights);
+            sheet.Image = G.GetBitmap();
         }
     }    
 }
