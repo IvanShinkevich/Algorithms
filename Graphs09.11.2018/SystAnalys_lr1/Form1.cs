@@ -14,13 +14,19 @@ namespace SystAnalys_lr1
         List<Edge> E;
         List<String> Value;
         List<Weight> W;
+
+        List<Vertex> CurV;
+        List<Weight> CurW;
+        List<Edge> CurE;
         
         int[,] AMatrix; //матрица смежности
         int[,] IMatrix; //матрица инцидентности
         List<int> Euler;
-        int[,] e;
         int selected1; //выбранные вершины, для соединения линиями
         int selected2;
+        ReqAlgosService algoService;
+        MatrixService matrixService;
+        DFSService dfsService;
 
         public Form1()
         {
@@ -29,67 +35,18 @@ namespace SystAnalys_lr1
             G = new DrawGraph(sheet.Width, sheet.Height);
             E = new List<Edge>();
             W = new List<Weight>();
+
+            CurV = new List<Vertex>();
+            CurW = new List<Weight>();
+            CurE = new List<Edge>();
+
             Value = new List<String>();
             Euler = new List<int>();
-            
+            algoService = new ReqAlgosService();
+            matrixService = new MatrixService();
+            dfsService = new DFSService();
+
             sheet.Image = G.GetBitmap();
-        }
-
-        private static int Find(DrawGraph.Subset[] subsets, int i)
-        {
-            if (subsets[i].Parent != i)
-                subsets[i].Parent = Find(subsets, subsets[i].Parent);
-
-            return subsets[i].Parent;
-        }
-
-        private static void Union(DrawGraph.Subset[] subsets, int x, int y)
-        {
-            int xroot = Find(subsets, x);
-            int yroot = Find(subsets, y);
-
-            if (subsets[xroot].Rank < subsets[yroot].Rank)
-                subsets[xroot].Parent = yroot;
-            else if (subsets[xroot].Rank > subsets[yroot].Rank)
-                subsets[yroot].Parent = xroot;
-            else
-            {
-                subsets[yroot].Parent = xroot;
-                ++subsets[xroot].Rank;
-            }
-        }
-
-        private List<Weight> Kruskal()
-        {
-            int verticesCount = V.Count;
-            Weight[] result = new Weight[verticesCount];
-            int i = 0;
-            int e = 0;
-            
-            W = W.OrderBy(edge => Convert.ToInt32(edge.value)).ToList();
-           
-            DrawGraph.Subset[] subsets = new DrawGraph.Subset[verticesCount];
-
-            for (int v = 0; v < verticesCount; ++v)
-            {
-                subsets[v].Parent = v;
-                subsets[v].Rank = 0;
-            }
-
-            while (e < verticesCount - 1)
-            {
-                var nextEdge = W[i++];
-                int x = Find(subsets, nextEdge.v1);
-                int y = Find(subsets, nextEdge.v2);
-
-                if (x != y)
-                {
-                    result[e++] = nextEdge;
-                    Union(subsets, x, y);
-                }
-            }
-
-            return result.ToList();
         }
 
         //кнопка - выбрать вершину
@@ -317,63 +274,26 @@ namespace SystAnalys_lr1
         //создание матрицы смежности и вывод в листбокс
         private void createAdjAndOut()
         {
-            MatrixService mService = new MatrixService();
-            AMatrix = mService.CreateAdjAndOut(V, E, W, listBoxMatrix);
+            AMatrix = matrixService.CreateAdjAndOut(CurV, CurE,CurW, listBoxMatrix);
         }
 
         //создание матрицы инцидентности и вывод в листбокс
         private void createIncAndOut()
         {
-            MatrixService mService = new MatrixService();
-            IMatrix = mService.CreateIncidenceMatrixAndOut(V, E, IMatrix, listBoxMatrix);
+            IMatrix = matrixService.CreateIncidenceMatrixAndOut(CurV, CurE, IMatrix, listBoxMatrix);
         }
 
         //поиск элементарных цепей
         private void chainButton_Click(object sender, EventArgs e)
         {
-            listBoxMatrix.Items.Clear();
-            //1-white 2-black
-            int[] color = new int[V.Count];
-            for (int i = 0; i < V.Count - 1; i++)
-                for (int j = i + 1; j < V.Count; j++)
-                {
-                    for (int k = 0; k < V.Count; k++)
-                        color[k] = 1;
-                    DFSchain(i, j, E, color, (i + 1).ToString());
-                }
+            dfsService.FindElementaryChains(CurV, CurE, listBoxMatrix);
         }
 
-        //обход в глубину. поиск элементарных цепей. (1-white 2-black)
-        private void DFSchain(int u, int endV, List<Edge> E, int[] color, string s)
-        {
-            //вершину не следует перекрашивать, если u == endV (возможно в нее есть несколько путей)
-            if (u != endV)  
-                color[u] = 2;
-            else
-            {
-                listBoxMatrix.Items.Add(s);
-                return;
-            }
-            for (int w = 0; w < E.Count; w++)
-            {
-                if (color[E[w].v2] == 1 && E[w].v1 == u)
-                {
-                    DFSchain(E[w].v2, endV, E, color, s + "-" + (E[w].v2 + 1).ToString());
-                    color[E[w].v2] = 1;
-                }
-                else if (color[E[w].v1] == 1 && E[w].v2 == u)
-                {
-                    DFSchain(E[w].v1, endV, E, color, s + "-" + (E[w].v1 + 1).ToString());
-                    color[E[w].v1] = 1;
-                }
-            }
-        }
 
         //поиск элементарных циклов
         private void cycleButton_Click(object sender, EventArgs e)
         {
-            DFSService dfsService = new DFSService();
-            dfsService.GetAndPrintCycles(V, E, listBoxMatrix);
+            dfsService.GetAndPrintCycles(CurV, CurE, listBoxMatrix);
         }
         
         private void saveButton_Click(object sender, EventArgs e)
@@ -409,56 +329,6 @@ namespace SystAnalys_lr1
             }
         }
 
-        private List<Weight> algorithmByPrim(List<Weight> E, List<Weight> MST)
-        {
-            //неиспользованные ребра
-            List<Weight> notUsedE = new List<Weight>(E);
-            //использованные вершины
-            List<int> usedV = new List<int>();
-            //неиспользованные вершины
-            List<int> notUsedV = new List<int>();
-            for (int i = 0; i < V.Count; i++)
-                notUsedV.Add(i);
-            //выбираем случайную начальную вершину
-            Random rand = new Random();
-            usedV.Add(rand.Next(0, V.Count));
-            notUsedV.RemoveAt(usedV[0]);
-            while (notUsedV.Count > 0)
-            {
-                int minE = -1; //номер наименьшего ребра
-                               //поиск наименьшего ребра
-                for (int i = 0; i < notUsedE.Count; i++)
-                {
-                    if ((usedV.IndexOf(notUsedE[i].v1) != -1) && (notUsedV.IndexOf(notUsedE[i].v2) != -1) ||
-                        (usedV.IndexOf(notUsedE[i].v2) != -1) && (notUsedV.IndexOf(notUsedE[i].v1) != -1))
-                    {
-                        if (minE != -1)
-                        {
-                            if (Convert.ToInt32(notUsedE[i].value) < Convert.ToInt32(notUsedE[minE].value))
-                                minE = i;
-                        }
-                        else
-                            minE = i;
-                    }
-                }
-                //заносим новую вершину в список использованных и удаляем ее из списка неиспользованных
-                if (usedV.IndexOf(notUsedE[minE].v1) != -1)
-                {
-                    usedV.Add(notUsedE[minE].v2);
-                    notUsedV.Remove(notUsedE[minE].v2);
-                }
-                else
-                {
-                    usedV.Add(notUsedE[minE].v1);
-                    notUsedV.Remove(notUsedE[minE].v1);
-                }
-                //заносим новое ребро в дерево и удаляем его из списка неиспользованных
-                MST.Add(notUsedE[minE]);
-                notUsedE.RemoveAt(minE);
-            }
-            return MST;
-        }
-
         private List<Edge> SynchronizeEdgesAndWeights(List<Weight> weights)
         {
             var edges = new List<Edge>();
@@ -473,16 +343,23 @@ namespace SystAnalys_lr1
             return edges;
         }
 
+        private void SynchronizeGraph(List<Vertex> vertices, List<Edge> edges, List<Weight> weights)
+        {
+            CurV = vertices;
+            CurE = edges;
+            CurW = weights;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            var weights = algorithmByPrim(W, new List<Weight>());
+            var weights = algoService.UsePrimeAlgo(V, W, new List<Weight>());
             var edges = SynchronizeEdgesAndWeights(weights);
             DrawGraph(V, edges, weights);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var weights = Kruskal();
+            var weights = algoService.UseKruskalAlgo(V, W);
             var edges = SynchronizeEdgesAndWeights(weights);
             DrawGraph(V, edges, weights);
         }
@@ -494,8 +371,8 @@ namespace SystAnalys_lr1
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            var weightsByPrime = algorithmByPrim(W, new List<Weight>());
-            var weightsByKruskal = Kruskal();
+            var weightsByPrime = algoService.UsePrimeAlgo(V, W, new List<Weight>());
+            var weightsByKruskal = algoService.UseKruskalAlgo(V, W);
 
             var resultWeights = weightsByPrime.Union(weightsByKruskal).ToList();
             var edges = SynchronizeEdgesAndWeights(resultWeights);
@@ -503,7 +380,7 @@ namespace SystAnalys_lr1
             var dfsService = new DFSService();
 
             dfsService.GetAndPrintCycles(V, edges, listBoxMatrix);
-            DrawGraph(V, edges, resultWeights);            
+            DrawGraph(V, edges, resultWeights);
         }
 
         private void DrawGraph(List<Vertex> vertices, List<Edge> edges, List<Weight> weights)
@@ -511,6 +388,7 @@ namespace SystAnalys_lr1
             G.clearSheet();
             G.drawALLGraph(vertices, edges, weights);
             sheet.Image = G.GetBitmap();
+            SynchronizeGraph(vertices, edges, weights);
         }
     }    
 }

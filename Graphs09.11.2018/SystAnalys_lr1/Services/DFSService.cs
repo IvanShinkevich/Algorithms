@@ -77,5 +77,45 @@ namespace SystAnalys_lr1.Services
                 }
             }
         }
+
+        public void FindElementaryChains(List<Vertex> vertices, List<Edge> edges, ListBox listBoxMatrix)
+        {
+            listBoxMatrix.Items.Clear();
+            //1-white 2-black
+            int[] color = new int[vertices.Count];
+            for (int i = 0; i < vertices.Count - 1; i++)
+                for (int j = i + 1; j < vertices.Count; j++)
+                {
+                    for (int k = 0; k < vertices.Count; k++)
+                        color[k] = 1;
+                    DFSchain(i, j, edges, color, (i + 1).ToString(), listBoxMatrix);
+                }
+        }
+
+        //обход в глубину. поиск элементарных цепей. (1-white 2-black)
+        private void DFSchain(int u, int endV, List<Edge> E, int[] color, string s, ListBox listBoxMatrix)
+        {
+            //вершину не следует перекрашивать, если u == endV (возможно в нее есть несколько путей)
+            if (u != endV)
+                color[u] = 2;
+            else
+            {
+                listBoxMatrix.Items.Add(s);
+                return;
+            }
+            for (int w = 0; w < E.Count; w++)
+            {
+                if (color[E[w].v2] == 1 && E[w].v1 == u)
+                {
+                    DFSchain(E[w].v2, endV, E, color, s + "-" + (E[w].v2 + 1).ToString(),listBoxMatrix);
+                    color[E[w].v2] = 1;
+                }
+                else if (color[E[w].v1] == 1 && E[w].v2 == u)
+                {
+                    DFSchain(E[w].v1, endV, E, color, s + "-" + (E[w].v1 + 1).ToString(), listBoxMatrix);
+                    color[E[w].v1] = 1;
+                }
+            }
+        }
     }
 }
