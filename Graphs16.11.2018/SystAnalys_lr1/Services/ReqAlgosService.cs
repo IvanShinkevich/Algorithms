@@ -136,7 +136,7 @@ namespace SystAnalys_lr1.Services
             listBoxMatrix.Items.Add("Vertex    Distance from source");
 
             for (int i = 0; i < distances.Length; ++i)
-                listBoxMatrix.Items.Add($"{i}\t  {distances[i]}");
+                listBoxMatrix.Items.Add($"{i+1}\t  {distances[i]}");
         }
 
         public int[] DijkstraAlgo(int[,] graph, int source, int verticesCount)
@@ -169,6 +169,44 @@ namespace SystAnalys_lr1.Services
         {
             var distances = DijkstraAlgo(graph, source, verticesCount);
             PrintDijkstraResult(distances, listBoxMatrix);
+        }
+
+        public void SearchCenterByFloudUorshell(int[,] adjacencyMatrix, int verticesAmount, ListBox listBoxMatrix)
+        {
+            for (int i = 0; i < verticesAmount; i++) adjacencyMatrix[i, i] = 0;
+
+            for (int k = 0; k < verticesAmount; k++)
+                for (int i = 0; i < verticesAmount; i++)
+                    for (int j = 0; j < verticesAmount; j++)
+                        if (adjacencyMatrix[i, k] != 0 && adjacencyMatrix[k, j] != 0 && i != j)
+                            if (adjacencyMatrix[i, k] + adjacencyMatrix[k, j] < adjacencyMatrix[i, j] || adjacencyMatrix[i, j] == 0)
+                                adjacencyMatrix[i, j] = adjacencyMatrix[i, k] + adjacencyMatrix[k, j];
+
+            int[] max = new int[verticesAmount];
+            for (int i = 0; i < verticesAmount; i++)
+            {
+                max[i] = adjacencyMatrix[0, i];
+
+                for (int j = 0; j < verticesAmount; j++)
+                {
+                    if (adjacencyMatrix[j, i] > max[i])
+                    {
+                        max[i] = adjacencyMatrix[j, i];
+                    }
+                }
+                listBoxMatrix.Items.Add(max[i]);
+            }
+            int center = verticesAmount;
+            int centerPos = 0;
+            for (int i = 0; i < verticesAmount; i++)
+            {
+                if (max[i] < center)
+                {
+                    center = max[i];
+                    centerPos = i;
+                }
+            }
+            listBoxMatrix.Items.Add($"Center vertice: {centerPos + 1}");
         }
     }
 }

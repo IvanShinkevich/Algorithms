@@ -275,6 +275,7 @@ namespace SystAnalys_lr1
         {
             AMatrix = matrixService.CreateAdjAndOut(CurV, CurE,CurW, listBoxMatrix);
             algoService.UseAndPrintDijkstraAlgo(AMatrix, 0, V.Count, listBoxMatrix);
+            algoService.SearchCenterByFloudUorshell(AMatrix, V.Count, listBoxMatrix);
         }
 
         //создание матрицы инцидентности и вывод в листбокс
