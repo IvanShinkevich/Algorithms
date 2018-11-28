@@ -7,6 +7,9 @@ namespace SystAnalys_lr1.Services
 {
     public class ReqAlgosService
     {
+        internal int time = 0;
+        internal const int StartupValueForBiconnectionCheck = -1;
+
         public List<Weight> UsePrimeAlgo(List<Vertex> vertices, List<Weight> edges, List<Weight> MST)
         {
             //неиспользованные ребра
@@ -207,6 +210,118 @@ namespace SystAnalys_lr1.Services
                 }
             }
             listBoxMatrix.Items.Add($"Center vertice: {centerPos + 1}");
+        }
+
+        // A recursive function that returns true if there is an articulation 
+        // point in given graph, otherwise returns false.
+        // u --> The vertex to be visited next 
+        // visited[] --> keeps tract of visited vertices 
+        // disc[] --> Stores discovery times of visited vertices 
+        // parent[] --> Stores parent vertices in DFS tree 
+        internal virtual bool IsBCUtil(int u, bool[] visited,
+            int[] disc, int[] low, int[] parent, int[,] adjMatrix, int verticesAmo)
+        {
+
+            // Count of children in DFS Tree 
+            int children = 0;
+
+            // Mark the current node as visited 
+            visited[u] = true;
+
+            // Initialize discovery time and low value 
+            disc[u] = low[u] = ++time;
+
+            // Go through all vertices aadjacent to this 
+            for(int i=0;i< verticesAmo; i++)
+            {
+                if (adjMatrix[u, i] == 0)
+                {
+                    continue;
+                }
+
+                int v = i; // v is current adjacent of u
+
+                // If v is not visited yet, then make it a child of u 
+                // in DFS tree and recur for it 
+                if (!visited[v])
+                {
+                    children++;
+                    parent[v] = u;
+
+                    // check if subgraph rooted with v has an articulation point 
+                    if (IsBCUtil(v, visited, disc, low, parent, adjMatrix, verticesAmo))
+                    {
+                        return true;
+                    }
+
+                    // Check if the subtree rooted with v has a connection to 
+                    // one of the ancestors of u 
+                    low[u] = Math.Min(low[u], low[v]);
+
+                    // u is an articulation point in following cases 
+
+                    // (1) u is root of DFS tree and has two or more chilren. 
+                    if (parent[u] == StartupValueForBiconnectionCheck && children > 1)
+                    {
+                        return true;
+                    }
+
+                    // (2) If u is not root and low value of one of its 
+                    // child is more than discovery value of u. 
+                    if (parent[u] != StartupValueForBiconnectionCheck && low[v] >= disc[u])
+                    {
+                        return true;
+                    }
+                }
+
+                // Update low value of u for parent function calls. 
+                else if (v != parent[u])
+                {
+                    low[u] = Math.Min(low[u], disc[v]);
+                }
+            }
+            return false;
+        }
+
+        // The main function that returns true if graph is Biconnected, 
+        // otherwise false. It uses recursive function isBCUtil() 
+        public bool BC(int verticesAmount, int[,] adjMatrix)
+        {
+                // Mark all the vertices as not visited 
+                bool[] visited = new bool[verticesAmount];
+                int[] disc = new int[verticesAmount];
+                int[] low = new int[verticesAmount];
+                int[] parent = new int[verticesAmount];
+
+                // Initialize parent and visited, and ap(articulation point) 
+                // arrays 
+                for (int i = 0; i < verticesAmount; i++)
+                {
+                    parent[i] = StartupValueForBiconnectionCheck;
+                    visited[i] = false;
+                }
+
+                // Call the recursive helper function to find if there is an 
+                // articulation/ point in given graph. We do DFS traversal 
+                // starring from vertex 0 
+                if (IsBCUtil(0, visited, disc, low, parent, adjMatrix, verticesAmount) == true)
+                {
+                    return false;
+                }
+
+                // Now check whether the given graph is connected or not. 
+                // An undirected graph is connected if all vertices are 
+                // reachable from any starting point (we have taken 0 as 
+                // starting point) 
+                for (int i = 0; i < verticesAmount; i++)
+                {
+                    if (visited[i] == false)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
         }
     }
 }

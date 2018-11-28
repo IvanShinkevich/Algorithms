@@ -275,7 +275,11 @@ namespace SystAnalys_lr1
         {
             AMatrix = matrixService.CreateAdjAndOut(CurV, CurE,CurW, listBoxMatrix);
             algoService.UseAndPrintDijkstraAlgo(AMatrix, 0, V.Count, listBoxMatrix);
+            AMatrix = matrixService.CreateAdjAndOut(CurV, CurE, CurW, listBoxMatrix);
             algoService.SearchCenterByFloudUorshell(AMatrix, V.Count, listBoxMatrix);
+            AMatrix = matrixService.CreateAdjAndOut(CurV, CurE, CurW, listBoxMatrix);
+            var res = algoService.BC(V.Count, AMatrix);
+            listBoxMatrix.Items.Add($"\nIsBiconnected:{res}");
         }
 
         //создание матрицы инцидентности и вывод в листбокс
