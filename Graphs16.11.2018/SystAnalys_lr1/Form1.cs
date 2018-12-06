@@ -394,5 +394,13 @@ namespace SystAnalys_lr1
             sheet.Image = G.GetBitmap();
             SynchronizeGraph(vertices, edges, weights);
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var adjMatrix = matrixService.CreateAdjAndOut(V, E, W, listBoxMatrix);
+            W = algoService.GetBiconnectedGraph(V.Count, adjMatrix, V, W);
+            E = SynchronizeEdgesAndWeights(W);
+            DrawGraph(V, E, W);
+        }
     }    
 }

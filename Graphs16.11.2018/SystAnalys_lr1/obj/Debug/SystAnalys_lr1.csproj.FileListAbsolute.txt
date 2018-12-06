@@ -113,3 +113,14 @@ E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Graphs16.11.2018\SystAnalys_l
 E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.csproj.CoreCompileInputs.cache
 E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.exe
 E:\studying\2к18ММФБГУ\rubl\Algo\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.pdb
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\bin\Debug\SystAnalys_lr1.exe.config
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.exe
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.pdb
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.csprojResolveAssemblyReference.cache
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.aboutForm.resources
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.Form1.resources
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.Properties.Resources.resources
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.csproj.GenerateResource.cache
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\obj\Debug\SystAnalys_lr1.csproj.CoreCompileInputs.cache
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\bin\Debug\SystAnalys_lr1.exe
+D:\Views\Mine\Algs\Algs\Algorithms\Graphs16.11.2018\SystAnalys_lr1\bin\Debug\SystAnalys_lr1.pdb

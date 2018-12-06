@@ -9,6 +9,7 @@ namespace SystAnalys_lr1.Services
     {
         internal int time = 0;
         internal const int StartupValueForBiconnectionCheck = -1;
+        private List<Weight> Weights;
 
         public List<Weight> UsePrimeAlgo(List<Vertex> vertices, List<Weight> edges, List<Weight> MST)
         {
@@ -322,6 +323,241 @@ namespace SystAnalys_lr1.Services
                 }
 
                 return true;
+        }
+
+        //For making graph biconnected
+        private bool MakeGraphBiconnected(int u, bool[] visited, int[] disc, int[] low, int[] parent, int[,] adjMatrix, int verticesAmo, List<Vertex> vertices)
+        {
+
+            // Count of children in DFS Tree 
+            int children = 0;
+
+            // Mark the current node as visited 
+            visited[u] = true;
+
+            // Initialize discovery time and low value 
+            disc[u] = low[u] = ++time;
+
+            // Go through all vertices aadjacent to this 
+            for (int i = 0; i < verticesAmo; i++)
+            {
+                if (adjMatrix[u, i] == 0)
+                {
+                    continue;
+                }
+
+                int v = i; // v is current adjacent of u 
+
+                // If v is not visited yet, then make it a child of u 
+                // in DFS tree and recur for it 
+                if (!visited[v])
+                {
+                    children++;
+                    parent[v] = u;
+
+                    // check if subgraph rooted with v has an articulation point 
+                    if (MakeGraphBiconnected(v, visited, disc, low, parent, adjMatrix, verticesAmo, vertices))
+                    {
+                        return true;
+                    }
+
+                    // Check if the subtree rooted with v has a connection to 
+                    // one of the ancestors of u 
+                    low[u] = Math.Min(low[u], low[v]);
+
+                    // u is an articulation point in following cases 
+
+                    // (1) u is root of DFS tree and has two or more chilren. 
+                    if (parent[u] == StartupValueForBiconnectionCheck && children > 1)
+                    {
+                        List<int> vert = new List<int>();
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+                            if (adjMatrix[u, j] != 0)
+                            {
+                                vert.Add(j);
+                                adjMatrix[u, j] = 0;
+                                adjMatrix[j, u] = 0;
+                            }
+                        }
+                        
+                        string[] used = new string[vertices.Count];
+                        string symbol = "symbol";
+                        int m = 0;
+
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+
+                            if (String.IsNullOrEmpty(used[j]))
+                            {
+                                bfs(j, adjMatrix, used, symbol, vertices.Count);
+                                m++;
+                                symbol = (string)("symbol" + m);
+                            }
+                        }
+
+                        bool flag = false;
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+                            for (int k = j + 1; k < vertices.Count; k++)
+                            {
+                                if (k == u || u == j) continue;
+                                if (!used[j].Equals(used[k]) && adjMatrix[j, k] == 0 && adjMatrix[k, j] == 0)
+                                {
+                                    Weight w = new Weight(j, k, "1");
+                                    Weights.Add(w);
+                                    adjMatrix[j, k] = 1;
+                                    adjMatrix[k, j] = 1;
+                                    flag = true;
+                                    break;
+                                }
+                            }
+
+                            if (flag) break;
+                        }
+
+                        for (int j = 0; j < vert.Count; j++)
+                        {
+                            if (adjMatrix[u, vert[j]] == 0)
+                            {
+                                adjMatrix[u, vert[j]] = 1;
+                                adjMatrix[vert[j], u] = 1;
+                            }
+                        }
+                    }
+
+                    // (2) If u is not root and low value of one of its 
+                    // child is more than discovery value of u. 
+                    if (parent[u] != StartupValueForBiconnectionCheck && low[v] >= disc[u])
+                    {
+                        // listBoxMatrix.Items.Add(v);
+                        //там где в ифах тру вставляла этот кусок
+                        //список вершин смежных с текущей будет
+                        List<int> vert = new List<int>();
+                        //тут заносим эти смежные  в список а в мце убираем
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+                            if (adjMatrix[u, j] != 0)
+                            {
+                                vert.Add(j);
+                                adjMatrix[u, j] = 0;
+                                adjMatrix[j, u] = 0;
+                            }
+                        }
+                        string[] used = new string[vertices.Count];
+                        string symbol = "symbol";
+                        int m = 0;
+
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+
+                            if (String.IsNullOrEmpty(used[j]))
+                            {
+                                bfs(j, adjMatrix, used, symbol, vertices.Count);
+                                m++;
+                                symbol = (string)("symbol" + m);
+                            }
+                        }
+
+                        bool flag = false;
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+                            for (int k = j + 1; k < vertices.Count; k++)
+                            {
+                                if (k == u || u == j) continue; 
+                                if (!used[j].Equals(used[k]) && adjMatrix[j, k] == 0 && adjMatrix[k, j] == 0)
+                                {
+                                    Weight w = new Weight(j, k, "1");
+                                    Weights.Add(w);
+                                    adjMatrix[j, k] = 1;
+                                    adjMatrix[k, j] = 1;
+                                    flag = true;
+                                    break;
+                                }
+
+
+                            }
+
+                            if (flag) break;
+                        }
+                        for (int j = 0; j < vert.Count; j++)
+                        {
+                            if (adjMatrix[u, vert[j]] == 0)
+                            {
+                                adjMatrix[u, vert[j]] = 1;
+                                adjMatrix[vert[j], u] = 1;
+                            }
+                        }
+                    }
+                }
+
+                // Update low value of u for parent function calls. 
+                else if (v != parent[u])
+                {
+                    low[u] = Math.Min(low[u], disc[v]);
+                }
+            }
+            return false;
+        }
+
+        public List<Weight> GetBiconnectedGraph(int verticesAmount, int[,] adjMatrix, List<Vertex> vertices, List<Weight> weights)
+        {
+            // Mark all the vertices as not visited 
+            bool[] visited = new bool[verticesAmount];
+            int[] disc = new int[verticesAmount];
+            int[] low = new int[verticesAmount];
+            int[] parent = new int[verticesAmount];
+            Weights = weights;
+            // Initialize parent and visited, and ap(articulation point) 
+            // arrays 
+            for (int i = 0; i < verticesAmount; i++)
+            {
+                parent[i] = StartupValueForBiconnectionCheck;
+                visited[i] = false;
+            }
+
+            // Call the recursive helper function to find if there is an 
+            // articulation/ point in given graph. We do DFS traversal 
+            // starring from vertex 0 
+            if (MakeGraphBiconnected(0, visited, disc, low, parent, adjMatrix, verticesAmount, vertices) == true)
+            {
+                return Weights;
+            }
+
+            // Now check whether the given graph is connected or not. 
+            // An undirected graph is connected if all vertices are 
+            // reachable from any starting point (we have taken 0 as 
+            // starting point) 
+            for (int i = 0; i < verticesAmount; i++)
+            {
+                if (visited[i] == false)
+                {
+                    return Weights;
+                }
+            }
+
+            return Weights;
+        }
+
+        private void bfs(int v, int[,] adjMatrix, string[] used, string symbol, int verticesAmount)
+        {
+            used[v] = symbol;
+            Queue<int> q = new Queue<int>();
+
+            q.Enqueue(v);
+            while (q.Count != 0)
+            {
+
+                v = q.Dequeue();
+                for (int i = 0; i < verticesAmount; i++)
+                {
+                    if (adjMatrix[i, v] != 0 && String.IsNullOrEmpty(used[i]))
+                    {
+                        used[i] = symbol;
+                        q.Enqueue(i);
+                    }
+                }
+            }
         }
     }
 }
