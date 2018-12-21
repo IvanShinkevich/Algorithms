@@ -402,7 +402,7 @@ namespace SystAnalys_lr1.Services
                             for (int k = j + 1; k < vertices.Count; k++)
                             {
                                 if (k == u || u == j) continue;
-                                if (!used[j].Equals(used[k]) && adjMatrix[j, k] == 0 && adjMatrix[k, j] == 0)
+                                if (!used[j].Equals(used[k]) && adjMatrix[j, k] == 0 && adjMatrix[k, j] == 0 && !(vert.Contains(k) || vert.Contains(j)))
                                 {
                                     Weight w = new Weight(j, k, "1");
                                     Weights.Add(w);
@@ -464,7 +464,7 @@ namespace SystAnalys_lr1.Services
                             for (int k = j + 1; k < vertices.Count; k++)
                             {
                                 if (k == u || u == j) continue; 
-                                if (!used[j].Equals(used[k]) && adjMatrix[j, k] == 0 && adjMatrix[k, j] == 0)
+                                if (!used[j].Equals(used[k]) && adjMatrix[j, k] == 0 && adjMatrix[k, j] == 0 && !(vert.Contains(k) || vert.Contains(j)))
                                 {
                                     Weight w = new Weight(j, k, "1");
                                     Weights.Add(w);
