@@ -431,10 +431,9 @@ namespace SystAnalys_lr1.Services
                     if (parent[u] != StartupValueForBiconnectionCheck && low[v] >= disc[u])
                     {
                         // listBoxMatrix.Items.Add(v);
-                        //там где в ифах тру вставляла этот кусок
-                        //список вершин смежных с текущей будет
+                        //adj. vertices
                         List<int> vert = new List<int>();
-                        //тут заносим эти смежные  в список а в мце убираем
+                        //add to adj, remove from matrix
                         for (int j = 0; j < vertices.Count; j++)
                         {
                             if (adjMatrix[u, j] != 0)
