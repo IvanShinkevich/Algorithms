@@ -1,0 +1,11 @@
+C:\Users\Ivan\source\repos\MT\MT\bin\Debug\netcoreapp2.0\MT.deps.json
+C:\Users\Ivan\source\repos\MT\MT\bin\Debug\netcoreapp2.0\MT.runtimeconfig.json
+C:\Users\Ivan\source\repos\MT\MT\bin\Debug\netcoreapp2.0\MT.runtimeconfig.dev.json
+C:\Users\Ivan\source\repos\MT\MT\bin\Debug\netcoreapp2.0\MT.dll
+C:\Users\Ivan\source\repos\MT\MT\bin\Debug\netcoreapp2.0\MT.pdb
+C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.csprojResolveAssemblyReference.cache
+C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.csproj.CoreCompileInputs.cache
+C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.AssemblyInfoInputs.cache
+C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.AssemblyInfo.cs
+C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.dll
+C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.pdb
