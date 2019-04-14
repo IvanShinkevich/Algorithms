@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenAlgs", "GenAlgs\GenAlgs.csproj", "{CF7D2920-8CEE-4C72-8788-51DE7EBF6696}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF7D2920-8CEE-4C72-8788-51DE7EBF6696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7D2920-8CEE-4C72-8788-51DE7EBF6696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7D2920-8CEE-4C72-8788-51DE7EBF6696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7D2920-8CEE-4C72-8788-51DE7EBF6696}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6A1AF7B-A33B-4540-810E-E17311E5C76C}
+	EndGlobalSection
+EndGlobal

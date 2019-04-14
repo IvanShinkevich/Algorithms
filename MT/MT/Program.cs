@@ -11,18 +11,18 @@ namespace MT
 
         private static List<int> TasksAvailable = new List<int>
         {
-            119, 264
+            117, 264
         };
 
         private static Dictionary<int, string> Alphabets = new Dictionary<int, string>()
         {
-            {119,  "210"},
-            {264,  "()"}
+            {117,  "210 "},
+            {264,  "() "}
         };
 
         private static Dictionary<int, string> TableOfConditions = new Dictionary<int, string>()
         {
-            {119, "CurState:Q1 CurSym:0 SymToReplace:0 Move:1 NextState:Q1 " +
+            {117, "CurState:Q1 CurSym:0 SymToReplace:0 Move:1 NextState:Q1 " +
                   "CurState:Q1 CurSym:2 SymToReplace:2 Move:1 NextState:Q1 " +
                   "CurState:Q1 CurSym:1 SymToReplace:1 Move:1 NextState:Q2 " +
                   "CurState:Q2 CurSym:0 SymToReplace:0 Move:1 NextState:Q2 " +
@@ -70,7 +70,6 @@ namespace MT
                 helper = $"{currSymbol}";
             }
 
-
             Regex reg = new Regex($@"CurState:Q{currState} CurSym:{helper} SymToReplace:(\S*) Move:(\S*) NextState:Q(\S*)");
             MatchCollection matches = reg.Matches(TableOfConditions[TaskNumber]);
             if (matches.Count == 1)
@@ -113,7 +112,6 @@ namespace MT
             StringBuilder currString = new StringBuilder($"e{word}e");
             while (currState != 0 && currState != -1)
             {
-
                 var iteration = GetIteration(currState, currString[currSymPos]);
                 Console.WriteLine($"CurrSym:{currString[currSymPos]}, symbol that would appear: {iteration.Symbol}, curr state:{currState}, next state: {iteration.StateNumber}, step: {iteration.Step}");
                 currString[currSymPos] = iteration.Symbol;

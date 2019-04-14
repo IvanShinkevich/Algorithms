@@ -674,11 +674,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ivan\\source\\repos\\MT\\MT\\MT.csproj",
+      "projectUniqueName": "E:\\studying\\2к18ММФБГУ\\algor\\Algorithms\\MT\\MT\\MT.csproj",
       "projectName": "MT",
-      "projectPath": "C:\\Users\\Ivan\\source\\repos\\MT\\MT\\MT.csproj",
+      "projectPath": "E:\\studying\\2к18ММФБГУ\\algor\\Algorithms\\MT\\MT\\MT.csproj",
       "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ivan\\source\\repos\\MT\\MT\\obj\\",
+      "outputPath": "E:\\studying\\2к18ММФБГУ\\algor\\Algorithms\\MT\\MT\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",

@@ -9,3 +9,14 @@ C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.AssemblyInfoInputs.c
 C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.AssemblyInfo.cs
 C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.dll
 C:\Users\Ivan\source\repos\MT\MT\obj\Debug\netcoreapp2.0\MT.pdb
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\bin\Debug\netcoreapp2.0\MT.deps.json
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\bin\Debug\netcoreapp2.0\MT.runtimeconfig.json
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\bin\Debug\netcoreapp2.0\MT.runtimeconfig.dev.json
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\bin\Debug\netcoreapp2.0\MT.dll
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\bin\Debug\netcoreapp2.0\MT.pdb
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\obj\Debug\netcoreapp2.0\MT.csprojResolveAssemblyReference.cache
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\obj\Debug\netcoreapp2.0\MT.csproj.CoreCompileInputs.cache
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\obj\Debug\netcoreapp2.0\MT.AssemblyInfoInputs.cache
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\obj\Debug\netcoreapp2.0\MT.AssemblyInfo.cs
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\obj\Debug\netcoreapp2.0\MT.dll
+E:\studying\2к18ММФБГУ\algor\Algorithms\MT\MT\obj\Debug\netcoreapp2.0\MT.pdb
