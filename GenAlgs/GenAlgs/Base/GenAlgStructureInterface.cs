@@ -7,15 +7,18 @@ namespace GenAlgs.Base
     public abstract class GenAlgStructureInterface
     {
         //Current population
-        public List<Parents> population;
+        public List<PopulationMember> population;
         //Best found ever population
-        public List<int> bestPopulation;
+        public List<PopulationMember> bestPopulation;
         //Property used to continue running cycle
         public bool areConditionsValid = true;
         //Field used for counting iterations amount so that we could stop if it specified as CONDITION OF BREAK
         private long iterationsAmount;
+        public double bestFitnessCoef = -1;
         //Fitness coefficient of previous population(so that it could be decided what steps to be done)
         public double fitnessCoef;
+        //Fitness coefficient of child population(so that it could be decided what steps to be done)
+        public double childFitnessCoef;
         //Ends of interval where the numbers should be chosen from
         public int min, max;
 
@@ -33,9 +36,7 @@ namespace GenAlgs.Base
         {
         }
 
-        public void Mutate()
-        {
-        }
+        public abstract void Mutate(List<PopulationMember> childs);
 
         public void CheckConditions()
         {
