@@ -1,6 +1,7 @@
 ﻿using GenAlgs.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GenAlgs.GenAlgImplementations
@@ -10,8 +11,8 @@ namespace GenAlgs.GenAlgImplementations
         //Equation coeffs
         private int powU, powW, powX, powY, powZ, powU1, powW1, powX1, powY1, powZ1, powU2, powW2, powX2, powY2, powZ2,
             powU3, powW3, powX3, powY3, powZ3, powU4, powW4, powX4, powY4, powZ4, Result, u, w, x, y, z,
-            variablesAmo = 5, parentsInPopulationAmo = 5;
-        double p1 = 0.005, p2 = 0.35, numberToSimplifyMutationProbabilityCalcs = 1000;
+            variablesAmo, parentsInPopulationAmo;
+        double p1 = 0.005, p2 = 0.35, numberToSimplifyMutationProbabilityCalcs;
 
         public void SetEquationCoeffs()
         {
@@ -53,11 +54,13 @@ namespace GenAlgs.GenAlgImplementations
 
         public override void CreateFirstPopulation()
         {
+            population = new List<PopulationMember>();
             for(int i=0; i< parentsInPopulationAmo; i++)
             {
+                population.Add(new PopulationMember());
                 for (int j = 0; j < variablesAmo; j++)
                 {
-                    population[i].memberSet[j] = GetRandomNumber();
+                    population[i].memberSet.Add(GetRandomNumber());
                 }
             }
             fitnessCoef = GetFitness(population);
@@ -86,7 +89,8 @@ namespace GenAlgs.GenAlgImplementations
                 {
                     Console.WriteLine($"Solution found!!!\n{parent.memberSet[0]}, {parent.memberSet[1]}," +
                     $"{ parent.memberSet[2]}, {parent.memberSet[3]}, {parent.memberSet[4]}");
-                    bestFitnessCoef =0;
+                    bestFitnessCoef = 0;
+                    solution = parent;
                     break;
                 }
                 parent.fitnessCoef = 1 / parent.fitnessCoef;
@@ -97,7 +101,7 @@ namespace GenAlgs.GenAlgImplementations
                 parent.fitnessCoef = parent.fitnessCoef / sum;
                 fitnessCoefficient += parent.fitnessCoef;
             }
-            return (fitnessCoefficient /= parentsInPopulationAmo);
+            return (fitnessCoefficient/parentsInPopulationAmo);
         }
 
         //consider sending the lowest val as first parameter due to random functioning?
@@ -115,18 +119,23 @@ namespace GenAlgs.GenAlgImplementations
 
         private int[] GetRandomSelectedPairs()
         {
-            List<int> parentsNumbers=new List<int>();
-            for(int i = 0; i < parentsInPopulationAmo; i++)
+            int[] parentsNumbers = new int[1000];
+            int i = 0;
+            while (i < parentsNumbers.Length)
             {
-                parentsNumbers[i] = i;
+                parentsNumbers[i] = i % parentsInPopulationAmo;
+                i++;
             }
+            
             Random random = new Random();
             //check if borders are included in random!!!floor - largest not bigger than!
-            int val = (int)Math.Floor(random.Next(0, (parentsNumbers.Count) * 1000)*1.0/1000);
-            parentsNumbers.Remove(val);
-            random = new Random();
-            int val1 = (int)Math.Floor(random.Next(0, (parentsNumbers.Count) * 1000) * 1.0 / 1000);
-            return new int[]{val, val1};
+            int val = parentsNumbers[random.Next(0,1000)];
+            int val2 = val;
+            while (val2 == val)
+            {
+                val2 = parentsNumbers[random.Next(0, 1000)];
+            }
+            return new int[]{val, val2 };
         }
 
         private List<int[]> RandomSelection()
@@ -135,7 +144,7 @@ namespace GenAlgs.GenAlgImplementations
             //Apply of random selection - select parents to be paired
             for(int i = 0; i < parentsInPopulationAmo; i++)
             {
-                selectedPairs[i] = GetRandomSelectedPairs();
+                selectedPairs.Add(GetRandomSelectedPairs());
             }
             return selectedPairs;
         }
@@ -146,11 +155,12 @@ namespace GenAlgs.GenAlgImplementations
             List<int[]> selectedPairs = RandomSelection();
             for(int i = 0; i < selectedPairs.Count; i++)
             {
+                childs.Add(new PopulationMember());
                 var val1 = population[selectedPairs[i][0]].fitnessCoef;
                 var val2 = population[selectedPairs[i][1]].fitnessCoef;
                 for (int j = 0; j < variablesAmo; j++)
                 {
-                    childs[i].memberSet[j] = population[selectedPairs[i][GetRandomWithProbabilitySelected(val1, val2)]].memberSet[j];
+                    childs[i].memberSet.Add(population[selectedPairs[i][GetRandomWithProbabilitySelected(val1, val2)]].memberSet[j]);
                 }
             }
             childFitnessCoef = GetFitness(childs);
@@ -192,17 +202,17 @@ namespace GenAlgs.GenAlgImplementations
             return sum;
         }
 
-        private void GetRandomWithProbabilitySelectionGlobal(List<PopulationMember> parents, List<PopulationMember> children)
+        private List<PopulationMember> GetRandomWithProbabilitySelectionGlobal(List<PopulationMember> parents, List<PopulationMember> children)
         {
             List<int> parentsNumbers = new List<int>();
             List<double> fitnessCoefs = new List<double>();
             List<PopulationMember> newPopulation = new List<PopulationMember>();
             for (int i = 0; i < parentsInPopulationAmo * 2; i++)
             {
-                parentsNumbers[i] = i;
+                parentsNumbers.Add(i);
                 if (i < parentsInPopulationAmo) {
                     fitnessCoefs.Add(parents[i].fitnessCoef);
-                } else { fitnessCoefs.Add(children[i].fitnessCoef); }
+                } else { fitnessCoefs.Add(children[i-parentsInPopulationAmo].fitnessCoef); }
             }
 
             for(int k = 0; k < parentsInPopulationAmo; k++)
@@ -229,20 +239,81 @@ namespace GenAlgs.GenAlgImplementations
                 parentsNumbers.Remove(position);
                 fitnessCoefs.Remove(position);
             }
-            var newFitnessCoeff = GetFitness(newPopulation);
+
+            return newPopulation;
         }
 
-        public void Replace()
+        public List<PopulationMember> Replace(List<PopulationMember> parents, List<PopulationMember> children)
         {
-            //GetRandomWithProbabilitySelectionGlobal
+            return GetRandomWithProbabilitySelectionGlobal(parents, children);
         }
 
         //this method would be called in a while(condition) as a condition.
-        public void CheckIfConditionsAreValid()
+        public bool CheckIfConditionsAreValid()
         {
-            //Max iterations - just call the stuff specified in a cycle with limited amount of iterations;not good soulution
-            //if(fitnessCoef==0) => success!
-            // if for several iterations we are not improving our fitness coeff => then stop.
+            if (bestFitnessCoef == 0)
+            {
+                Console.WriteLine($"Solution found:");
+                solution.Show();
+                return false;
+            }
+
+            if (iterationsAmount >= maxIterationsAmount)
+            {
+                return false;
+            }
+
+            if (amountOfPopulationsLessSucessfullThenTheBestOne > maxAmountOfPopulationsLessSucessfullThenTheBestOne)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void SetupSettings()
+        {
+            SetEquationCoeffs();
+            numberToSimplifyMutationProbabilityCalcs = 1000;
+            p1 = 0.015;
+            p2 = 0.35;
+            variablesAmo = 5;
+            parentsInPopulationAmo = 25;
+            maxIterationsAmount = 50;
+            maxAmountOfPopulationsLessSucessfullThenTheBestOne = 10;
+        }
+
+        public void SolveDiophEquation()
+        {
+            SetupSettings();
+            
+            CreateFirstPopulation();
+            foreach (var pop in population)
+            {
+                pop.Show();
+            }
+            while (CheckIfConditionsAreValid())
+            {
+                List<PopulationMember> childs = FuckParents();
+                Mutate(childs);
+                childFitnessCoef = GetFitness(childs);
+                population = Replace(population, childs);
+                fitnessCoef = GetFitness(population);
+                if (bestFitnessCoef < fitnessCoef)
+                {
+                    bestFitnessCoef = fitnessCoef;
+                    amountOfPopulationsLessSucessfullThenTheBestOne = 0;
+                    bestPopulation = population;
+                }
+                else
+                {
+                    amountOfPopulationsLessSucessfullThenTheBestOne++;
+                }
+                Console.WriteLine(fitnessCoef);
+                foreach (var pop in population)
+                {
+                    pop.Show();
+                }
+            }
         }
     }
 }

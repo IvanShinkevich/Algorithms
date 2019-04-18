@@ -1,4 +1,5 @@
 ﻿using System;
+using GenAlgs.GenAlgImplementations;
 
 namespace GenAlgs
 {
@@ -6,7 +7,9 @@ namespace GenAlgs
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            GenAlg10_3 solver = new GenAlg10_3();
+            solver.SolveDiophEquation();
+            Console.ReadKey();
         }
     }
 }

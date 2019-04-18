@@ -13,7 +13,12 @@ namespace GenAlgs.Base
         //Property used to continue running cycle
         public bool areConditionsValid = true;
         //Field used for counting iterations amount so that we could stop if it specified as CONDITION OF BREAK
-        private long iterationsAmount;
+        public long iterationsAmount;
+        public long maxIterationsAmount;
+        public long amountOfPopulationsLessSucessfullThenTheBestOne;
+        public long maxAmountOfPopulationsLessSucessfullThenTheBestOne = 10;
+
+        public PopulationMember solution;
         public double bestFitnessCoef = -1;
         //Fitness coefficient of previous population(so that it could be decided what steps to be done)
         public double fitnessCoef;
