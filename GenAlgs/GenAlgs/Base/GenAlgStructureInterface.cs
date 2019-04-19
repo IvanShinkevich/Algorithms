@@ -19,7 +19,7 @@ namespace GenAlgs.Base
         public long maxAmountOfPopulationsLessSucessfullThenTheBestOne = 10;
 
         public PopulationMember solution;
-        public double bestFitnessCoef = -1;
+        public double bestFitnessCoef;
         //Fitness coefficient of previous population(so that it could be decided what steps to be done)
         public double fitnessCoef;
         //Fitness coefficient of child population(so that it could be decided what steps to be done)
