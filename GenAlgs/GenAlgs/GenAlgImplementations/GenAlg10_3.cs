@@ -16,7 +16,9 @@ namespace GenAlgs.GenAlgImplementations
         private int powU, powW, powX, powY, powZ, powU1, powW1, powX1, powY1, powZ1, powU2, powW2, powX2, powY2, powZ2,
             powU3, powW3, powX3, powY3, powZ3, powU4, powW4, powX4, powY4, powZ4, Result, u, w, x, y, z,
             variablesAmo, parentsInPopulationAmo;
-        double p1 = 0.005, p2 = 0.35, numberToSimplifyMutationProbabilityCalcs;
+        double p1 { get; set; }
+        double p2 { get; set; }
+        double numberToSimplifyMutationProbabilityCalcs;
 
         public void SetEquationCoeffs()
         {
@@ -64,7 +66,7 @@ namespace GenAlgs.GenAlgImplementations
                 population.Add(new PopulationMember());
                 for (int j = 0; j < variablesAmo; j++)
                 {
-                    population[i].memberSet.Add(GetRandomNumber(-30, 30));
+                    population[i].memberSet.Add(GetRandomNumber());
                 }
             }
             fitnessCoef = GetFitness(population);
@@ -150,7 +152,6 @@ namespace GenAlgs.GenAlgImplementations
             }
             
             Random random = new Random();
-            //check if borders are included in random!!!floor - largest not bigger than!
             int val = parentsNumbers[random.Next(0,1000)];
             int val2 = val;
             while (val2 == val)
@@ -252,6 +253,31 @@ namespace GenAlgs.GenAlgImplementations
             }
         }
 
+        private bool CheckIfSameCreatureExists(List<PopulationMember> members, PopulationMember member)
+        {
+            bool flag = false;
+            for(int i=0; i < members.Count; i++)
+            {
+                for(int j = 0; j < members[i].memberSet.Count; j++)
+                {
+                    if (members[i].memberSet[j] == member.memberSet[j])
+                    {
+                        flag = true;
+                    }
+                    else
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    return flag;
+                }
+            }
+            return flag;
+        }
+
         private List<PopulationMember> GetRandomWithProbabilitySelectionGlobal(List<PopulationMember> parents, List<PopulationMember> children)
         {
             List<PopulationMember> allCreatures = new List<PopulationMember>();
@@ -273,7 +299,14 @@ namespace GenAlgs.GenAlgImplementations
                     sum += allCreatures[j].fitnessCoef * coef;
                     position = j;
                 }
-                newPopulation.Add(allCreatures[position]);
+                if(CheckIfSameCreatureExists(newPopulation, allCreatures[position]))
+                {
+                    i--;
+                }
+                else
+                {
+                    newPopulation.Add(allCreatures[position]);
+                }
                 allCreatures.Remove(allCreatures[position]);
             }
 
@@ -309,16 +342,18 @@ namespace GenAlgs.GenAlgImplementations
 
         public void SetupSettings()
         {
+            var random = new Random();
             SetEquationCoeffs();
             numberToSimplifyMutationProbabilityCalcs = 1000;
-            p1 = 0.15;
-            p2 = 0.35;
-            variablesAmo = 5;
-            parentsInPopulationAmo = 5;
-            maxIterationsAmount = 50;
-            maxAmountOfPopulationsLessSucessfullThenTheBestOne = 10;
-        }
+            p1 = random.NextDouble() * (0.15 - 0);
 
+            p2 = random.NextDouble() * (0.3 - 0);
+            variablesAmo = 5;
+            parentsInPopulationAmo = 4;
+            maxIterationsAmount = 100000;
+            maxAmountOfPopulationsLessSucessfullThenTheBestOne = 45;
+        }
+   
         public void SolveDiophEquation()
         {
             SetupSettings();
@@ -333,9 +368,13 @@ namespace GenAlgs.GenAlgImplementations
                 List<PopulationMember> childs = FuckParents();
                 Mutate(childs);
                 childFitnessCoef = GetFitness(childs);
-                //population = Replace(population, childs);
-                population = childs;
+                population = Replace(population, childs);
                 fitnessCoef = GetFitness(population);
+                iterationsAmount++;
+                if(bestFitnessCoef == 0)
+                {
+                    break;
+                }
                 if (bestFitnessCoef < fitnessCoef)
                 {
                     bestFitnessCoef = fitnessCoef;
@@ -352,6 +391,14 @@ namespace GenAlgs.GenAlgImplementations
                     pop.Show();
                     Console.WriteLine($"Substituted: {SubstituteInEquation(pop)}");
                 }
+            }
+
+            Console.WriteLine($"Iterations amount: {iterationsAmount}");
+            if (solution != null)
+            {
+                Console.WriteLine("Solution:");
+                solution.Show();
+                Console.WriteLine($"{SubstituteInEquation(solution)}");
             }
         }
     }

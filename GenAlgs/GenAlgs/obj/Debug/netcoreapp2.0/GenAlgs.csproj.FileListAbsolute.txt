@@ -9,3 +9,14 @@ D:\Mine\Mine\algos\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.As
 D:\Mine\Mine\algos\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.AssemblyInfo.cs
 D:\Mine\Mine\algos\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.dll
 D:\Mine\Mine\algos\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.pdb
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\bin\Debug\netcoreapp2.0\GenAlgs.deps.json
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\bin\Debug\netcoreapp2.0\GenAlgs.runtimeconfig.json
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\bin\Debug\netcoreapp2.0\GenAlgs.runtimeconfig.dev.json
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\bin\Debug\netcoreapp2.0\GenAlgs.dll
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\bin\Debug\netcoreapp2.0\GenAlgs.pdb
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.csprojResolveAssemblyReference.cache
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.csproj.CoreCompileInputs.cache
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.AssemblyInfoInputs.cache
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.AssemblyInfo.cs
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.dll
+E:\studying\2к18ММФБГУ\algor\Algorithms\GenAlgs\GenAlgs\obj\Debug\netcoreapp2.0\GenAlgs.pdb
