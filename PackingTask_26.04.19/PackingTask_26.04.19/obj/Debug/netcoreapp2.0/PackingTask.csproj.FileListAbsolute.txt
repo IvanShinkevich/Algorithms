@@ -1,0 +1,11 @@
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask.csprojResolveAssemblyReference.cache
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask.csproj.CoreCompileInputs.cache
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask.AssemblyInfoInputs.cache
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask.AssemblyInfo.cs
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\bin\Debug\netcoreapp2.0\PackingTask.deps.json
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\bin\Debug\netcoreapp2.0\PackingTask.runtimeconfig.json
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\bin\Debug\netcoreapp2.0\PackingTask.runtimeconfig.dev.json
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\bin\Debug\netcoreapp2.0\PackingTask.dll
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\bin\Debug\netcoreapp2.0\PackingTask.pdb
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask.dll
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask.pdb

@@ -1,0 +1,4 @@
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask_26.04.19.csprojResolveAssemblyReference.cache
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask_26.04.19.csproj.CoreCompileInputs.cache
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask_26.04.19.AssemblyInfoInputs.cache
+c:\users\ivan\source\repos\PackingTask_26.04.19\PackingTask_26.04.19\obj\Debug\netcoreapp2.0\PackingTask_26.04.19.AssemblyInfo.cs
